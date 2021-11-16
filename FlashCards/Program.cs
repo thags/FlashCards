@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using FlashCards.xmlManager;
+using FlashCards.DatabaseManagement;
 
 namespace FlashCards
 {
@@ -7,9 +9,10 @@ namespace FlashCards
     {
         static void Main(string[] args)
         {
-            Dictionary<string, string> configs = XmlManager.ReadConfig();
-            Console.WriteLine(configs["test"]);
-            Console.WriteLine(configs["anotherTest"]);
+            string config = XmlManager.ReadConfig("dbConnectionString");
+            Console.WriteLine(config);
+
+            DBManager.Connect();
         }
     }
 }
