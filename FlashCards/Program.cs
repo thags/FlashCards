@@ -6,7 +6,8 @@ namespace FlashCards
     {
         static void Main(string[] args)
         {
-            
+            string answer = XmlManager.ReadConfig();
+            Console.WriteLine(answer);
         }
     }
 }
