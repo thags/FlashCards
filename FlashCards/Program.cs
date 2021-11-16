@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace FlashCards
 {
@@ -6,8 +7,9 @@ namespace FlashCards
     {
         static void Main(string[] args)
         {
-            string answer = XmlManager.ReadConfig();
-            Console.WriteLine(answer);
+            Dictionary<string, string> configs = XmlManager.ReadConfig();
+            Console.WriteLine(configs["test"]);
+            Console.WriteLine(configs["anotherTest"]);
         }
     }
 }
