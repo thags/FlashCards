@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "FlashCards": {
+      "commandName": "Project",
+      "workingDirectory": "C:\\Users\\Tyler\\source\\repos\\FlashCards\\FlashCards"
+    }
+  }
+}
