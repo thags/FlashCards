@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using FlashCards.xmlManager;
-using FlashCards.DatabaseManagement;
+using FlashCards.UserInput;
 
 namespace FlashCards
 {
@@ -9,12 +8,7 @@ namespace FlashCards
     {
         static void Main(string[] args)
         {
-            string config = XmlManager.ReadConfig("dbConnectionString");
-            Console.WriteLine(config);
-
-            var stacks = DBManager.GetStacks();
-            DBManager.UpdateStackName(stacks[0].Id, "updateNameTestMethod");
-            DBManager.GetStacks();
+            new MainLoop();
         }
     }
 }
