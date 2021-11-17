@@ -9,8 +9,8 @@ namespace FlashCards.Models
     class Flashcard
     {
         public int Id { get; set; }
-        public string stack { get; set; }
-        public string front { get; set; }
-        public string back { get; set; }
+        public string Stack { get; set; }
+        public string Front { get; set; }
+        public string Back { get; set; }
     }
 }
