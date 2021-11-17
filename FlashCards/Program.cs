@@ -12,7 +12,9 @@ namespace FlashCards
             string config = XmlManager.ReadConfig("dbConnectionString");
             Console.WriteLine(config);
 
-            DBManager.Connect();
+            var stacks = DBManager.GetStacks();
+            DBManager.UpdateStackName(stacks[0].Id, "updateNameTestMethod");
+            DBManager.GetStacks();
         }
     }
 }

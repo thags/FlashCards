@@ -5,51 +5,59 @@ using System.Text;
 using System.Threading.Tasks;
 using FlashCards.xmlManager;
 using System.Data.SqlClient;
+using FlashCards.Models;
 
 namespace FlashCards.DatabaseManagement
 {
     class DBManager
     {
-        public static void Connect()
+        private static SqlConnection GetConnection()
         {
             string connectionString = XmlManager.ReadConfig("dbConnectionString");
             Console.WriteLine(connectionString);
             var connection = new SqlConnection(connectionString);
-            //connection.Open();
-
-            //Testing items - can delete later.
-            //InsertStack(connection, "test");
-            //Read(connection);
-            //UpdateStackName(connection, 13, "UpdateTest");
-            //DeleteStack(connection,4);
-            //DeleteStack(connection, "test");
-            //Read(connection);
+            return connection;
         }
-        private static void Read(SqlConnection connection) 
+        private static SqlConnection OpenSql()
         {
+            SqlConnection connection = GetConnection();
             connection.Open();
-            SqlCommand command;
-            SqlDataReader dataReader;
-            string sql, Output = "";
+            return connection;
+        }
+        
 
-            sql = "SELECT * FROM Stacks";
-            command = new SqlCommand(sql, connection);
+        public static List<Stack> GetStacks()
+        {
+            SqlConnection connection = OpenSql();
 
-            dataReader = command.ExecuteReader();
+            var stackList = new List<Stack> { };
+
+            SqlCommand command = new SqlCommand("SELECT * FROM Stacks", connection);
+            SqlDataReader dataReader = command.ExecuteReader();
 
             while (dataReader.Read())
             {
-                Output = Output + dataReader.GetValue(0) + " - " + dataReader.GetValue(1) + "\n";
+                int Id = (int)dataReader.GetValue(0);
+                string Name = (string)dataReader.GetValue(1);
+                Stack newStack = new Stack
+                {
+                    Id = Id,
+                    Name = Name
+                };
+                stackList.Add(newStack);
             }
-            Console.WriteLine(Output);
-
+            //remove console.writeline in final, this is just for testing
+            Console.WriteLine($"{stackList[0].Name} {stackList[0].Id}");
+            
             command.Dispose();
             connection.Close();
+
+            return stackList;
         }
 
-        private static void InsertStack(SqlConnection connection, string stackName)
+        public static void InsertStack(string stackName)
         {
-            connection.Open();
+            SqlConnection connection = OpenSql();
             SqlCommand command;
             SqlDataAdapter adapter = new SqlDataAdapter();
             string sql;
@@ -64,9 +72,9 @@ namespace FlashCards.DatabaseManagement
             connection.Close();
         }
 
-        private static void DeleteStack(SqlConnection connection, int Id)
+        public static void DeleteStack(int Id)
         {
-            connection.Open();
+            SqlConnection connection = OpenSql();
             SqlCommand command;
             SqlDataAdapter adapter = new SqlDataAdapter();
             string sql;
@@ -80,9 +88,9 @@ namespace FlashCards.DatabaseManagement
             command.Dispose();
             connection.Close();
         }
-        private static void DeleteStack(SqlConnection connection, string name)
+        public static void DeleteStack(string name)
         {
-            connection.Open();
+            SqlConnection connection = OpenSql();
             SqlCommand command;
             SqlDataAdapter adapter = new SqlDataAdapter();
             string sql;
@@ -97,9 +105,9 @@ namespace FlashCards.DatabaseManagement
             connection.Close();
         }
 
-        private static void UpdateStackName(SqlConnection connection, int Id, string updatedName)
+        public static void UpdateStackName(int Id, string updatedName)
         {
-            connection.Open();
+            SqlConnection connection = OpenSql();
             SqlCommand command;
             SqlDataAdapter adapter = new SqlDataAdapter();
             string sql;
