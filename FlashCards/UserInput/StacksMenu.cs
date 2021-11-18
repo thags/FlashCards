@@ -41,8 +41,24 @@ namespace FlashCards.UserInput
                     continueLooping = false;
                     break;
                 case "V":
-                    DBManager.GetStacks();
+                    //Change to a TableVisualization engine
+                    StackManager.GetStacks();
                     break;
+                case "C":
+                    string newStackName = User.GetStackName();
+                    StackManager.InsertStack(newStackName);
+                    break;
+                case "R":
+                    Console.WriteLine("Current Stacks are");
+                    StackManager.GetStacks();
+                    StackManager.UpdateStackName(User.GetStackId(), User.GetStackName());
+                    break;
+                case "D":
+                    Console.WriteLine("Current Stacks are");
+                    StackManager.GetStacks();
+                    StackManager.Delete(User.GetStackId());
+                    break;
+
                 default:
                     Console.WriteLine("Incorrect input, try again");
                     break;
