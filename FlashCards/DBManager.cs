@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 using FlashCards.xmlManager;
 using System.Data.SqlClient;
 
-namespace FlashCards.DatabaseManagement
+namespace FlashCards
 {
     class DBManager
     {
         private static SqlConnection GetConnection()
         {
             string connectionString = XmlManager.ReadConfig("dbConnectionString");
-            Console.WriteLine(connectionString);
             var connection = new SqlConnection(connectionString);
             return connection;
         }

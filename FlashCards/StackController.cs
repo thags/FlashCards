@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using FlashCards.Models;
 using System.Data.SqlClient;
 
-namespace FlashCards.DatabaseManagement
+namespace FlashCards
 {
     class StackController
     {
@@ -30,8 +30,34 @@ namespace FlashCards.DatabaseManagement
                 };
                 stackList.Add(newStack);
             }
-            //remove console.writeline in final, this is just for testing
-            Console.WriteLine($"{stackList[0].Name} {stackList[0].Id}");
+
+            command.Dispose();
+            connection.Close();
+
+            return stackList;
+        }
+
+        public static List<Stack> GetStacks(int XAmount, string order = "ASC")
+        {
+            SqlConnection connection = DBManager.OpenSql();
+
+            var stackList = new List<Stack> { };
+            string sqlCommand = $"SELECT TOP {XAmount} * FROM Stacks ORDER BY Id {order}";
+
+            SqlCommand command = new SqlCommand(sqlCommand, connection);
+            SqlDataReader dataReader = command.ExecuteReader();
+
+            while (dataReader.Read())
+            {
+                int Id = (int)dataReader.GetValue(0);
+                string Name = (string)dataReader.GetValue(1);
+                Stack newStack = new Stack
+                {
+                    Id = Id,
+                    Name = Name
+                };
+                stackList.Add(newStack);
+            }
 
             command.Dispose();
             connection.Close();

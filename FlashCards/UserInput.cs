@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FlashCards.DatabaseManagement;
 
 namespace FlashCards
 {
@@ -19,7 +18,8 @@ namespace FlashCards
                 Console.WriteLine("S to Create, Delete or Rename stacks");
                 Console.WriteLine("--------------------------");
 
-                string choice = GetUserChoice();
+                string choice = GetInputUserChoice();
+                Console.Clear();
                 switch (choice)
                 {
                     case "0":
@@ -49,29 +49,35 @@ namespace FlashCards
 
                 Console.WriteLine("--------------------------");
 
-                string choice = GetUserChoice();
+                string choice = GetInputUserChoice();
+                Console.Clear();
                 switch (choice)
                 {
                     case "0":
                         exit = true;
                         break;
                     case "V":
-                        //Change to a TableVisualization engine
-                        StackController.GetStacks();
+                        Console.Clear();
+                        TableVisualisationEngine.ViewTable(StackController.GetStacks());
+                        Console.WriteLine("Any key to continue");
+                        Console.ReadLine();
+                        Console.Clear();
                         break;
                     case "C":
-                        string newStackName = GetStackName();
+                        string newStackName = GetInputStackName();
                         StackController.InsertStack(newStackName);
+                        Console.WriteLine("Newly created Stack: ");
+                        TableVisualisationEngine.ViewTable(StackController.GetStacks(1, "DESC"));
                         break;
                     case "R":
                         Console.WriteLine("Current Stacks are");
                         StackController.GetStacks();
-                        StackController.UpdateStackName(GetStackId(), GetStackName());
+                        StackController.UpdateStackName(GetInputStackId(), GetInputStackName());
                         break;
                     case "D":
                         Console.WriteLine("Current Stacks are");
                         StackController.GetStacks();
-                        StackController.Delete(GetStackId());
+                        StackController.Delete(GetInputStackId());
                         break;
 
                     default:
@@ -80,15 +86,15 @@ namespace FlashCards
                 }
             }
         }
-        private static string GetUserChoice() => Console.ReadLine().ToUpper();
+        private static string GetInputUserChoice() => Console.ReadLine().ToUpper();
 
-        public static string GetStackName()
+        public static string GetInputStackName()
         {
             Console.WriteLine("Input a name for the stack");
             return Console.ReadLine();
         }
 
-        public static int GetStackId()
+        public static int GetInputStackId()
         {
             int userInput = -1;
             bool correctInput = false;
