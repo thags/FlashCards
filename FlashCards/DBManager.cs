@@ -10,15 +10,18 @@ namespace FlashCards
 {
     class DBManager
     {
-        private static SqlConnection GetConnection()
+        private static string GetConnectionString()
         {
-            string connectionString = XmlManager.ReadConfig("dbConnectionString");
-            var connection = new SqlConnection(connectionString);
-            return connection;
+            string dataSource = XmlManager.ReadConfig("dataSource");
+            string initialCatalog = XmlManager.ReadConfig("initialCatalog");
+            string integratedSecurity = XmlManager.ReadConfig("integratedSecurity");
+            string connectionString = $"Server={dataSource};database={initialCatalog};Integrated Security={integratedSecurity}";
+            return connectionString;
         }
         public static SqlConnection OpenSql()
         {
-            SqlConnection connection = GetConnection();
+            string connectionString = GetConnectionString();
+            var connection = new SqlConnection(connectionString);
             connection.Open();
             return connection;
         }

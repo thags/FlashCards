@@ -18,8 +18,7 @@ namespace FlashCards
                 Console.WriteLine("S to Create, Delete or Rename stacks");
                 Console.WriteLine("--------------------------");
 
-                string choice = GetInputUserChoice();
-                Console.Clear();
+                string choice = GetUserChoice();
                 switch (choice)
                 {
                     case "0":
@@ -49,52 +48,49 @@ namespace FlashCards
 
                 Console.WriteLine("--------------------------");
 
-                string choice = GetInputUserChoice();
-                Console.Clear();
+                string choice = GetUserChoice();
                 switch (choice)
                 {
                     case "0":
                         exit = true;
+                        Console.Clear();
                         break;
                     case "V":
                         Console.Clear();
                         TableVisualisationEngine.ViewTable(StackController.GetStacks());
-                        Console.WriteLine("Any key to continue");
-                        Console.ReadLine();
-                        Console.Clear();
                         break;
                     case "C":
-                        string newStackName = GetInputStackName();
+                        Console.Clear();
+                        string newStackName = GetStackName();
                         StackController.InsertStack(newStackName);
-                        Console.WriteLine("Newly created Stack: ");
+                        Console.WriteLine("Newly created stack is:");
                         TableVisualisationEngine.ViewTable(StackController.GetStacks(1, "DESC"));
                         break;
                     case "R":
-                        Console.WriteLine("Current Stacks are");
-                        StackController.GetStacks();
-                        StackController.UpdateStackName(GetInputStackId(), GetInputStackName());
+                        Console.Clear();
+                        StackController.UpdateStackName(GetStackId(), GetStackName());
                         break;
                     case "D":
-                        Console.WriteLine("Current Stacks are");
-                        StackController.GetStacks();
-                        StackController.Delete(GetInputStackId());
+                        Console.Clear();
+                        StackController.Delete(GetStackId());
                         break;
 
                     default:
+                        Console.Clear();
                         Console.WriteLine("Incorrect input, try again");
                         break;
                 }
             }
         }
-        private static string GetInputUserChoice() => Console.ReadLine().ToUpper();
+        private static string GetUserChoice() => Console.ReadLine().ToUpper();
 
-        public static string GetInputStackName()
+        public static string GetStackName()
         {
             Console.WriteLine("Input a name for the stack");
             return Console.ReadLine();
         }
 
-        public static int GetInputStackId()
+        public static int GetStackId()
         {
             int userInput = -1;
             bool correctInput = false;
