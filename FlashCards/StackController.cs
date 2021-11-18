@@ -8,7 +8,7 @@ using System.Data.SqlClient;
 
 namespace FlashCards.DatabaseManagement
 {
-    class StackManager
+    class StackController
     {
         public static List<Stack> GetStacks()
         {

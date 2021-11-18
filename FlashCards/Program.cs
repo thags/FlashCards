@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using FlashCards.UserInput;
 
 namespace FlashCards
 {
@@ -8,7 +7,7 @@ namespace FlashCards
     {
         static void Main(string[] args)
         {
-            MainLoop.Loop();
+            UserInput.GetUserInput();
         }
     }
 }
