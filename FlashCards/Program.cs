@@ -8,7 +8,7 @@ namespace FlashCards
     {
         static void Main(string[] args)
         {
-            new MainLoop();
+            MainLoop.Loop();
         }
     }
 }

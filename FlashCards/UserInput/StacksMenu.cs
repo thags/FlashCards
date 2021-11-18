@@ -7,29 +7,32 @@ using FlashCards.DatabaseManagement;
 
 namespace FlashCards.UserInput
 {
-    class MainLoop
+    class StacksMenu
     {
         public static void Loop()
         {
             bool continueLooping = true;
             while (continueLooping)
             {
-                showMainMenu();
+                ShowUserChoices();
                 string userChoice = User.getUserChoice();
-                continueLooping = userChoiceResult(userChoice);
+                continueLooping = UserChoiceResult(userChoice);
             }
+            
+                   
         }
-        private static void showMainMenu()
+        private static void ShowUserChoices()
         {
             Console.WriteLine("--------------------------");
-            Console.WriteLine("0 to exit");
-            Console.WriteLine("S to Create, Delete or Rename stacks");
+            Console.WriteLine("0 to return to main menu");
+            Console.WriteLine("V to view all stacks");
+            Console.WriteLine("C to Create a stack");
+            Console.WriteLine("R to Rename a stack");
+            Console.WriteLine("D to Delete a stack");
 
             Console.WriteLine("--------------------------");
         }
-        
-
-        private static bool userChoiceResult(string choice)
+        private static bool UserChoiceResult(string choice)
         {
             bool continueLooping = true;
             switch (choice)
@@ -37,8 +40,8 @@ namespace FlashCards.UserInput
                 case "0":
                     continueLooping = false;
                     break;
-                case "S":
-                    StacksMenu.Loop();
+                case "V":
+                    DBManager.GetStacks();
                     break;
                 default:
                     Console.WriteLine("Incorrect input, try again");
