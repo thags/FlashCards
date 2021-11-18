@@ -13,9 +13,9 @@ namespace FlashCards
         private static string GetConnectionString()
         {
             string dataSource = XmlManager.ReadConfig("dataSource");
-            string initialCatalog = XmlManager.ReadConfig("initialCatalog");
+            string dbName = XmlManager.ReadConfig("dbName");
             string integratedSecurity = XmlManager.ReadConfig("integratedSecurity");
-            string connectionString = $"Server={dataSource};database={initialCatalog};Integrated Security={integratedSecurity}";
+            string connectionString = $"Server={dataSource};database={dbName};Integrated Security={integratedSecurity}";
             return connectionString;
         }
         public static SqlConnection OpenSql()
