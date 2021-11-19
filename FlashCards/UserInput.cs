@@ -15,7 +15,8 @@ namespace FlashCards
             {
                 Console.WriteLine("--------------------------");
                 Console.WriteLine("0 to exit");
-                Console.WriteLine("S to Create, Delete or Rename stacks");
+                Console.WriteLine("S to View, Create, Delete or Rename Stacks");
+                Console.WriteLine("F to View, Create, Delete or Rename Flashcards");
                 Console.WriteLine("--------------------------");
 
                 string choice = GetUserChoice();
@@ -26,6 +27,9 @@ namespace FlashCards
                         break;
                     case "S":
                         StacksMenu();
+                        break;
+                    case "F":
+                        FlashCardsMenu();
                         break;
                     default:
                         Console.WriteLine("Incorrect input, try again");
@@ -41,8 +45,8 @@ namespace FlashCards
             {
                 Console.WriteLine("--------------------------");
                 Console.WriteLine("0 to return to main menu");
-                Console.WriteLine("V to view all stacks");
-                Console.WriteLine("C to Create a stack");
+                Console.WriteLine("V to View all Stacks");
+                Console.WriteLine("C to Create a Stack");
                 Console.WriteLine("R to Rename a stack");
                 Console.WriteLine("D to Delete a stack");
 
@@ -73,6 +77,51 @@ namespace FlashCards
                     case "D":
                         Console.Clear();
                         StackController.Delete(GetStackId());
+                        break;
+
+                    default:
+                        Console.Clear();
+                        Console.WriteLine("Incorrect input, try again");
+                        break;
+                }
+            }
+        }
+        private static void FlashCardsMenu()
+        {
+            bool exit = false;
+            while (!exit)
+            {
+                Console.WriteLine("--------------------------");
+                Console.WriteLine("0 to return to main menu");
+                Console.WriteLine("V to view all Flashcards");
+                Console.WriteLine("C to Create a Flashcard");
+                Console.WriteLine("R to Edit a Flashcard");
+                Console.WriteLine("D to Delete a Flashcard");
+
+                Console.WriteLine("--------------------------");
+
+                string choice = GetUserChoice();
+                switch (choice)
+                {
+                    case "0":
+                        exit = true;
+                        Console.Clear();
+                        break;
+                    case "V":
+                        Console.Clear();
+                        TableVisualisationEngine.ViewTable(FlashcardController.GetAllCards());
+                        break;
+                    case "C":
+                        Console.Clear();
+                        
+                        break;
+                    case "R":
+                        Console.Clear();
+                        
+                        break;
+                    case "D":
+                        Console.Clear();
+                        
                         break;
 
                     default:
