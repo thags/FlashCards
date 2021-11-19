@@ -42,5 +42,24 @@ namespace FlashCards
 
             return stackList;
         }
+
+        public static void CreateFlashCard(string stackName, string front, string back)
+        {
+            SqlConnection connection = DBManager.OpenSql();
+            SqlCommand command;
+            SqlDataAdapter adapter = new SqlDataAdapter();
+
+            string sql;
+            int stackId = StackController.GetIdFromName(stackName);
+
+            sql = $"Insert into flashcards (StackId, Front, Back) values ({stackId}, '{front}', '{back}') ";
+            command = new SqlCommand(sql, connection);
+
+            adapter.InsertCommand = new SqlCommand(sql, connection);
+            adapter.InsertCommand.ExecuteNonQuery();
+
+            command.Dispose();
+            connection.Close();
+        }
     }
 }

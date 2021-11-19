@@ -132,10 +132,10 @@ namespace FlashCards
                 //May be better to choose which stack to be within first, and then a new menu
                 //where a user can edit/view/create/delete cards within that stack
                 Console.WriteLine("--------------------------");
+                Console.WriteLine($"Current working stack: {currentStackToWorkOn} \n");
                 Console.WriteLine("0 to return to main menu");
                 Console.WriteLine("V to view all Flashcards in stack");
-                Console.WriteLine("C to choose a different stack of flashcards to work on");
-                //Console.WriteLine("C to Create a Flashcard");
+                Console.WriteLine("C to Create a Flashcard in current stack");
                 //Console.WriteLine("R to Edit a Flashcard");
                 //Console.WriteLine("D to Delete a Flashcard");
 
@@ -155,7 +155,9 @@ namespace FlashCards
                         break;
                     case "C":
                         Console.Clear();
-
+                        string frontOfCard = GetFrontFlashCard();
+                        string backOfCard = GetBackFlashCard();
+                        FlashcardController.CreateFlashCard(currentStackToWorkOn, frontOfCard, backOfCard);
                         break;
                     case "R":
                         Console.Clear();
@@ -176,8 +178,18 @@ namespace FlashCards
         private static string GetUserMenuChoice() => Console.ReadLine().ToUpper();
         private static string RemoveSpecials(string s)
         {
-            s = Regex.Replace(s, "[^a-zA-Z0-9]", "");
+            s = Regex.Replace(s, "[^a-zA-Z0-9' ']", "");
             return s;
+        }
+        private static string GetFrontFlashCard()
+        {
+            Console.WriteLine("Input information for the front of the flashcard");
+            return RemoveSpecials(Console.ReadLine());
+        }
+        private static string GetBackFlashCard()
+        {
+            Console.WriteLine("Input information for the back of the flashcard");
+            return RemoveSpecials(Console.ReadLine());
         }
 
         public static bool GetNewStackName(out string newStackName)
