@@ -64,6 +64,19 @@ namespace FlashCards
 
             return stackList;
         }
+
+        public static bool CheckStackExists(string name)
+        {
+            var result = GetStacks(name);
+            if (result.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public static List<Stack> GetStacks(int Id)
         {
             SqlConnection connection = DBManager.OpenSql();
@@ -76,11 +89,38 @@ namespace FlashCards
 
             while (dataReader.Read())
             {
-                int Id = (int)dataReader.GetValue(0);
+                int stackId = (int)dataReader.GetValue(0);
                 string Name = (string)dataReader.GetValue(1);
                 Stack newStack = new Stack
                 {
-                    Id = Id,
+                    Id = stackId,
+                    Name = Name
+                };
+                stackList.Add(newStack);
+            }
+
+            command.Dispose();
+            connection.Close();
+
+            return stackList;
+        }
+        public static List<Stack> GetStacks(string name)
+        {
+            SqlConnection connection = DBManager.OpenSql();
+
+            var stackList = new List<Stack> { };
+            string sqlCommand = $"SELECT TOP 1 * FROM Stacks WHERE Name = '{name}'";
+
+            SqlCommand command = new SqlCommand(sqlCommand, connection);
+            SqlDataReader dataReader = command.ExecuteReader();
+
+            while (dataReader.Read())
+            {
+                int stackId = (int)dataReader.GetValue(0);
+                string Name = (string)dataReader.GetValue(1);
+                Stack newStack = new Stack
+                {
+                    Id = stackId,
                     Name = Name
                 };
                 stackList.Add(newStack);
@@ -142,14 +182,14 @@ namespace FlashCards
             connection.Close();
         }
 
-        public static void UpdateStackName(int Id, string updatedName)
+        public static void UpdateStackName(string stackName, string updatedName)
         {
             SqlConnection connection = DBManager.OpenSql();
             SqlCommand command;
             SqlDataAdapter adapter = new SqlDataAdapter();
             string sql;
 
-            sql = $"UPDATE Stacks SET Name = '{updatedName}' WHERE Id = {Id}";
+            sql = $"UPDATE Stacks SET Name = '{updatedName}' WHERE Name = '{stackName}'";
             command = new SqlCommand(sql, connection);
 
             adapter.DeleteCommand = new SqlCommand(sql, connection);

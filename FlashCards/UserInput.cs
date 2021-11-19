@@ -19,7 +19,7 @@ namespace FlashCards
                 Console.WriteLine("F to View, Create, Delete or Rename Flashcards");
                 Console.WriteLine("--------------------------");
 
-                string choice = GetUserChoice();
+                string choice = GetUserMenuChoice();
                 switch (choice)
                 {
                     case "0":
@@ -52,7 +52,7 @@ namespace FlashCards
 
                 Console.WriteLine("--------------------------");
 
-                string choice = GetUserChoice();
+                string choice = GetUserMenuChoice();
                 switch (choice)
                 {
                     case "0":
@@ -65,18 +65,37 @@ namespace FlashCards
                         break;
                     case "C":
                         Console.Clear();
-                        string newStackName = GetStackName();
-                        StackController.InsertStack(newStackName);
-                        Console.WriteLine("Newly created stack is:");
-                        TableVisualisationEngine.ViewTable(StackController.GetStacks(1, "DESC"));
+                        bool isInputCorrect = GetNewStackName(out string newStackName);
+                        if (isInputCorrect)
+                        {
+                            StackController.InsertStack(newStackName);
+                            Console.WriteLine("Newly created stack is:");
+                            TableVisualisationEngine.ViewTable(StackController.GetStacks(1, "DESC"));
+                        }
+                        else
+                        {
+                            Console.WriteLine("No new stack created, invalid name input");
+                        }
                         break;
                     case "R":
                         Console.Clear();
-                        StackController.UpdateStackName(GetStackId(), GetStackName());
+                        bool chosenStackExists = GetCurrentStack(out string stackToUpdate);
+                        if (chosenStackExists)
+                        {
+                            bool updateNameNotExist = GetNewStackName(out string newName);
+                            if (updateNameNotExist)
+                            {
+                                StackController.UpdateStackName(stackToUpdate, newName);
+                            }
+                        }
                         break;
                     case "D":
                         Console.Clear();
-                        StackController.Delete(GetStackId());
+                        chosenStackExists = GetCurrentStack(out string stackToDelete);
+                        if (chosenStackExists)
+                        {
+                            StackController.Delete(stackToDelete);
+                        }
                         break;
 
                     default:
@@ -88,19 +107,24 @@ namespace FlashCards
         }
         private static void FlashCardsMenu()
         {
+            Console.Clear();
+            Console.WriteLine("Choose a stack of flashcards to interact with: ");
             bool exit = false;
             while (!exit)
             {
+                //May be better to choose which stack to be within first, and then a new menu
+                //where a user can edit/view/create/delete cards within that stack
                 Console.WriteLine("--------------------------");
                 Console.WriteLine("0 to return to main menu");
                 Console.WriteLine("V to view all Flashcards");
-                Console.WriteLine("C to Create a Flashcard");
-                Console.WriteLine("R to Edit a Flashcard");
-                Console.WriteLine("D to Delete a Flashcard");
+                Console.WriteLine("C to choose a stack of flashcards to work on");
+                //Console.WriteLine("C to Create a Flashcard");
+                //Console.WriteLine("R to Edit a Flashcard");
+                //Console.WriteLine("D to Delete a Flashcard");
 
                 Console.WriteLine("--------------------------");
 
-                string choice = GetUserChoice();
+                string choice = GetUserMenuChoice();
                 switch (choice)
                 {
                     case "0":
@@ -110,10 +134,11 @@ namespace FlashCards
                     case "V":
                         Console.Clear();
                         TableVisualisationEngine.ViewTable(FlashcardController.GetAllCards());
+                        //TODO: Input a stack ID or name and view all flashcards of that stack
                         break;
                     case "C":
                         Console.Clear();
-                        
+
                         break;
                     case "R":
                         Console.Clear();
@@ -131,12 +156,65 @@ namespace FlashCards
                 }
             }
         }
-        private static string GetUserChoice() => Console.ReadLine().ToUpper();
+        private static string GetUserMenuChoice() => Console.ReadLine().ToUpper();
 
-        public static string GetStackName()
+        public static bool GetNewStackName(out string newStackName)
         {
-            Console.WriteLine("Input a name for the stack");
-            return Console.ReadLine();
+            //we want to get a new stack name and verify that the name doesn't already exist in the DB, as a stack
+            bool correctInput = false;
+            while (!correctInput)
+            {
+                Console.WriteLine("Input a name for the new stack");
+                Console.WriteLine("Or input 0 to go back");
+                string userChoice = Console.ReadLine();
+                if (userChoice == "0")
+                {
+                    break;
+                }
+
+                correctInput = !StackController.CheckStackExists(userChoice);
+                if (correctInput)
+                {
+                    newStackName = userChoice;
+                    return true;
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine($"Stack {userChoice} already exists, try again.");
+                }
+            }
+            newStackName = "Invalid";
+            return correctInput;
+        }
+        public static bool GetCurrentStack(out string stackName)
+        {
+            //we want to get a current stack name and verify that the name already exists in the DB, as a stack
+            bool correctInput = false;
+            while (!correctInput)
+            {
+                Console.WriteLine("Input a current stack name");
+                Console.WriteLine("Or input 0 to exit input");
+                string userChoice = Console.ReadLine();
+                if (userChoice == "0")
+                {
+                    break;
+                }
+
+                correctInput = StackController.CheckStackExists(userChoice);
+                if (correctInput)
+                {
+                    stackName = userChoice;
+                    return true;
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine($"Stack {userChoice} doesn't exist, try again.");
+                }
+            }
+            stackName = "Invalid";
+            return correctInput;
         }
 
         public static int GetStackId()
@@ -153,8 +231,6 @@ namespace FlashCards
                 }
             }
             return userInput;
-
-
         }
     }
 }
