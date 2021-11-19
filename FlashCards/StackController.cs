@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using FlashCards.Models;
 using System.Data.SqlClient;
 
@@ -50,6 +46,18 @@ namespace FlashCards
 
             return answer;
         }
+        public static bool CheckStackExists(string name)
+        {
+            var result = GetStacks(name);
+            if (result.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public static List<Stack> GetStacks()
         {
             SqlConnection connection = DBManager.OpenSql();
@@ -76,7 +84,6 @@ namespace FlashCards
 
             return stackList;
         }
-
         public static List<Stack> GetStacks(int XAmount, string order = "ASC")
         {
             SqlConnection connection = DBManager.OpenSql();
@@ -103,19 +110,6 @@ namespace FlashCards
             connection.Close();
 
             return stackList;
-        }
-
-        public static bool CheckStackExists(string name)
-        {
-            var result = GetStacks(name);
-            if (result.Count > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
         public static List<Stack> GetStacks(int Id)
         {
@@ -171,7 +165,6 @@ namespace FlashCards
 
             return stackList;
         }
-
         public static void InsertStack(string stackName)
         {
             SqlConnection connection = DBManager.OpenSql();
@@ -184,23 +177,6 @@ namespace FlashCards
 
             adapter.InsertCommand = new SqlCommand(sql, connection);
             adapter.InsertCommand.ExecuteNonQuery();
-
-            command.Dispose();
-            connection.Close();
-        }
-
-        public static void Delete(int Id)
-        {
-            SqlConnection connection = DBManager.OpenSql();
-            SqlCommand command;
-            SqlDataAdapter adapter = new SqlDataAdapter();
-            string sql;
-
-            sql = $"DELETE FROM Stacks WHERE Id = {Id}";
-            command = new SqlCommand(sql, connection);
-
-            adapter.DeleteCommand = new SqlCommand(sql, connection);
-            adapter.DeleteCommand.ExecuteNonQuery();
 
             command.Dispose();
             connection.Close();
@@ -221,7 +197,6 @@ namespace FlashCards
             command.Dispose();
             connection.Close();
         }
-
         public static void UpdateStackName(string stackName, string updatedName)
         {
             SqlConnection connection = DBManager.OpenSql();

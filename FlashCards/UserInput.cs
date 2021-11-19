@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace FlashCards
 {
@@ -41,7 +37,6 @@ namespace FlashCards
                 }
             }
         }
-        
         private static void StacksMenu()
         {
             bool exit = false;
@@ -245,173 +240,7 @@ namespace FlashCards
                 }
             }
         }
-        private static string GetUserMenuChoice() => Console.ReadLine().ToUpper();
-        private static void WaitForUser()
-        {
-            Console.WriteLine("Press any key to continue");
-            Console.ReadLine();
-            Console.Clear();
-        }
-
-        private static string RemoveSpecials(string s)
-        {
-            s = Regex.Replace(s, "[^a-zA-Z0-9' ']", "");
-            return s;
-        }
-        private static string GetFrontFlashCard()
-        {
-            Console.WriteLine("\n --------------------------");
-            Console.WriteLine("Input information for the front of the flashcard");
-            Console.WriteLine("-------------------------- \n");
-            string input = Console.ReadLine();
-            Console.Clear();
-            return RemoveSpecials(input);
-        }
-        private static string GetBackFlashCard()
-        {
-            Console.WriteLine("\n --------------------------");
-            Console.WriteLine("Input information for the back of the flashcard");
-            Console.WriteLine("-------------------------- \n");
-            string input = Console.ReadLine();
-            Console.Clear();
-            return RemoveSpecials(input);
-        }
-
-        public static bool GetNewStackName(out string newStackName)
-        {
-            //we want to get a new stack name and verify that the name doesn't already exist in the DB, as a stack
-            bool correctInput = false;
-            while (!correctInput)
-            {
-                Console.WriteLine("\n --------------------------");
-                Console.WriteLine("Input a name for the new stack");
-                Console.WriteLine("Or input 0 to go back");
-                Console.WriteLine("-------------------------- \n");
-                string input = Console.ReadLine();
-                Console.Clear();
-                string userChoice = RemoveSpecials(input);
-                if (userChoice == "0")
-                {
-                    break;
-                }
-
-                correctInput = !StackController.CheckStackExists(userChoice);
-                if (correctInput)
-                {
-                    newStackName = userChoice;
-                    return true;
-                }
-                else
-                {
-                    Console.Clear();
-                    Console.WriteLine($"Stack {userChoice} already exists, try again.");
-                }
-            }
-            newStackName = "Invalid";
-            return correctInput;
-        }
-        public static bool GetCurrentStack(out string stackName)
-        {
-            //we want to get a current stack name and verify that the name already exists in the DB, as a stack
-            bool correctInput = false;
-            while (!correctInput)
-            {
-                Console.WriteLine("\n --------------------------");
-                Console.WriteLine("Input a current stack name");
-                Console.WriteLine("Or input 0 to exit input");
-                Console.WriteLine("-------------------------- \n");
-                string input = Console.ReadLine();
-                string userChoice = RemoveSpecials(input);
-                if (userChoice == "0")
-                {
-                    stackName = "none";
-                    return false;
-                }
-
-                correctInput = StackController.CheckStackExists(userChoice);
-                if (correctInput)
-                {
-                    stackName = userChoice;
-                    return true;
-                }
-                else
-                {
-                    Console.Clear();
-                    Console.WriteLine($"Stack {userChoice} doesn't exist, try again.");
-                }
-            }
-            stackName = "Invalid";
-            return correctInput;
-        }
-
-        public static int GetStackId()
-        {
-            int userInput = -1;
-            bool correctInput = false;
-            while (!correctInput)
-            {
-                Console.WriteLine("--------------------------");
-                Console.WriteLine("Input an ID of a stack");
-                Console.WriteLine("-------------------------- \n");
-                string input = Console.ReadLine();
-                Console.Clear();
-                correctInput = int.TryParse(input, out userInput);
-                if (!correctInput)
-                {
-                    Console.WriteLine("Incorrect Input, try again");
-                }
-            }
-            return userInput;
-        }
-        public static bool GetCardId(out int cardId)
-        {
-            cardId = -1;
-            bool correctInput = false;
-            bool realCard = false;
-            while (!correctInput && !realCard)
-            {
-                Console.WriteLine("\n --------------------------");
-                Console.WriteLine("Input an ID of a flashcard");
-                Console.WriteLine("Or 0 to exit");
-                Console.WriteLine("-------------------------- \n");
-                string input = Console.ReadLine();
-                Console.Clear();
-
-                correctInput = int.TryParse(input, out int userInput);
-                
-                if (!correctInput)
-                {
-                    Console.Clear();
-                    Console.WriteLine("Incorrect Input, try again \n");
-                }
-                else
-                {
-                    switch (userInput)
-                    {
-                        case 0:
-                            return false;
-                        default:
-                            realCard = FlashcardController.CheckCardExists(userInput);
-                            if (!realCard)
-                            {
-                                Console.Clear();
-                                Console.WriteLine("Not a valid flashcard id, try again");
-                            }
-                            else
-                            {
-                                cardId = userInput;
-                                return true;
-                            }
-                            break;
-                    }
-                    
-                }
-                
-            }
-            return false;
-        }
-
-        public static void FlashCardEditMenu(int cardId)
+        private static void FlashCardEditMenu(int cardId)
         {
             bool exit = false;
             while (!exit)
@@ -445,7 +274,150 @@ namespace FlashCards
                         break;
                 }
             }
-            
+
+        }
+        private static void WaitForUser()
+        {
+            Console.WriteLine("Press any key to continue");
+            Console.ReadLine();
+            Console.Clear();
+        }
+        private static string RemoveSpecials(string s)
+        {
+            s = Regex.Replace(s, "[^a-zA-Z0-9' ']", "");
+            return s;
+        }
+        private static string GetUserMenuChoice() => Console.ReadLine().ToUpper();
+        private static string GetFrontFlashCard()
+        {
+            Console.WriteLine("\n --------------------------");
+            Console.WriteLine("Input information for the front of the flashcard");
+            Console.WriteLine("-------------------------- \n");
+            string input = Console.ReadLine();
+            Console.Clear();
+            return RemoveSpecials(input);
+        }
+        private static string GetBackFlashCard()
+        {
+            Console.WriteLine("\n --------------------------");
+            Console.WriteLine("Input information for the back of the flashcard");
+            Console.WriteLine("-------------------------- \n");
+            string input = Console.ReadLine();
+            Console.Clear();
+            return RemoveSpecials(input);
+        }
+        private static bool GetCardId(out int cardId)
+        {
+            cardId = -1;
+            bool correctInput = false;
+            bool realCard = false;
+            while (!correctInput && !realCard)
+            {
+                Console.WriteLine("\n --------------------------");
+                Console.WriteLine("Input an ID of a flashcard");
+                Console.WriteLine("Or 0 to exit");
+                Console.WriteLine("-------------------------- \n");
+                string input = Console.ReadLine();
+                Console.Clear();
+
+                correctInput = int.TryParse(input, out int userInput);
+
+                if (!correctInput)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Incorrect Input, try again \n");
+                }
+                else
+                {
+                    switch (userInput)
+                    {
+                        case 0:
+                            return false;
+                        default:
+                            realCard = FlashcardController.CheckCardExists(userInput);
+                            if (!realCard)
+                            {
+                                Console.Clear();
+                                Console.WriteLine("Not a valid flashcard id, try again");
+                            }
+                            else
+                            {
+                                cardId = userInput;
+                                return true;
+                            }
+                            break;
+                    }
+
+                }
+
+            }
+            return false;
+        }
+        private static bool GetNewStackName(out string newStackName)
+        {
+            //we want to get a new stack name and verify that the name doesn't already exist in the DB, as a stack
+            bool correctInput = false;
+            while (!correctInput)
+            {
+                Console.WriteLine("\n --------------------------");
+                Console.WriteLine("Input a name for the new stack");
+                Console.WriteLine("Or input 0 to go back");
+                Console.WriteLine("-------------------------- \n");
+                string input = Console.ReadLine();
+                Console.Clear();
+                string userChoice = RemoveSpecials(input);
+                if (userChoice == "0")
+                {
+                    break;
+                }
+
+                correctInput = !StackController.CheckStackExists(userChoice);
+                if (correctInput)
+                {
+                    newStackName = userChoice;
+                    return true;
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine($"Stack {userChoice} already exists, try again.");
+                }
+            }
+            newStackName = "Invalid";
+            return correctInput;
+        }
+        private static bool GetCurrentStack(out string stackName)
+        {
+            //we want to get a current stack name and verify that the name already exists in the DB, as a stack
+            bool correctInput = false;
+            while (!correctInput)
+            {
+                Console.WriteLine("\n --------------------------");
+                Console.WriteLine("Input a current stack name");
+                Console.WriteLine("Or input 0 to exit input");
+                Console.WriteLine("-------------------------- \n");
+                string input = Console.ReadLine();
+                string userChoice = RemoveSpecials(input);
+                if (userChoice == "0")
+                {
+                    stackName = "none";
+                    return false;
+                }
+
+                correctInput = StackController.CheckStackExists(userChoice);
+                if (correctInput)
+                {
+                    stackName = userChoice;
+                    return true;
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine($"Stack {userChoice} doesn't exist, try again.");
+                }
+            }
+            stackName = "Invalid";
+            return correctInput;
         }
     }
 }

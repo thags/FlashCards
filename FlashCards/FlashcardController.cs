@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using FlashCards.Models;
 using System.Data.SqlClient;
 
@@ -117,7 +113,6 @@ namespace FlashCards
 
             return stackList;
         }
-
         public static void CreateFlashCard(string stackName, string front, string back)
         {
             SqlConnection connection = DBManager.OpenSql();
@@ -136,7 +131,6 @@ namespace FlashCards
             command.Dispose();
             connection.Close();
         }
-
         public static void UpdateCard(int cardId, string newText, string side)
         {
             SqlConnection connection = DBManager.OpenSql();

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FlashCards.xmlManager;
 using System.Data.SqlClient;
 
@@ -59,7 +55,6 @@ namespace FlashCards
                 Console.WriteLine("Database Exists!");
             }
         }
-
         public static void CreateStackTable()
         {
             try
@@ -101,7 +96,6 @@ namespace FlashCards
                 Console.WriteLine("Stacks table Exists!");
             }
         }
-
         public static void CreateFlashCardTable()
         {
             try
@@ -146,7 +140,6 @@ namespace FlashCards
                 Console.WriteLine("FlashCards table Exists!");
             }
         }
-
         public static void CreateFlashCardForeignKey()
         {
             try
@@ -186,7 +179,6 @@ namespace FlashCards
                 Console.WriteLine("FlashCards FK Exists!");
             }
         }
-
         private static string GetConnectionString()
         {
             string server = XmlManager.ReadConfig("dbServer");
@@ -203,7 +195,5 @@ namespace FlashCards
             connection.Open();
             return connection;
         }
-
-
     }
 }
