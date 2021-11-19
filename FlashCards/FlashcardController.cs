@@ -10,13 +10,15 @@ namespace FlashCards
 {
     class FlashcardController
     {
-        public static List<Flashcard> GetAllCards()
+        public static List<Flashcard> GetAllCardsInStack(string stackName)
         {
             SqlConnection connection = DBManager.OpenSql();
 
             var stackList = new List<Flashcard> { };
+            int stackId = StackController.GetIdFromName(stackName);
+            string sqlCommand = $"SELECT * FROM Flashcards WHERE StackId = {stackId}";
 
-            SqlCommand command = new SqlCommand("SELECT * FROM Flashcards", connection);
+            SqlCommand command = new SqlCommand(sqlCommand, connection);
             SqlDataReader dataReader = command.ExecuteReader();
 
             while (dataReader.Read())
@@ -28,7 +30,7 @@ namespace FlashCards
                 Flashcard newStack = new Flashcard
                 {
                     Id = Id,
-                    StackId = Stack,
+                    StackName = stackName,
                     Front = Front,
                     Back = Back,
                 };

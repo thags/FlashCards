@@ -109,16 +109,32 @@ namespace FlashCards
         private static void FlashCardsMenu()
         {
             Console.Clear();
-            Console.WriteLine("Choose a stack of flashcards to interact with: ");
-            bool exit = false;
+            string currentStackToWorkOn = "none";
+            bool exit = true;
+            bool stackCheck = false;
+            while (!stackCheck)
+            {
+                Console.WriteLine("Choose a stack of flashcards to interact with: ");
+                stackCheck = GetCurrentStack(out currentStackToWorkOn);
+                if (stackCheck)
+                {
+                    exit = false;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            
+            
             while (!exit)
             {
                 //May be better to choose which stack to be within first, and then a new menu
                 //where a user can edit/view/create/delete cards within that stack
                 Console.WriteLine("--------------------------");
                 Console.WriteLine("0 to return to main menu");
-                Console.WriteLine("V to view all Flashcards");
-                Console.WriteLine("C to choose a stack of flashcards to work on");
+                Console.WriteLine("V to view all Flashcards in stack");
+                Console.WriteLine("C to choose a different stack of flashcards to work on");
                 //Console.WriteLine("C to Create a Flashcard");
                 //Console.WriteLine("R to Edit a Flashcard");
                 //Console.WriteLine("D to Delete a Flashcard");
@@ -134,7 +150,7 @@ namespace FlashCards
                         break;
                     case "V":
                         Console.Clear();
-                        TableVisualisationEngine.ViewTable(FlashcardController.GetAllCards());
+                        TableVisualisationEngine.ViewTable(FlashcardController.GetAllCardsInStack(currentStackToWorkOn));
                         //TODO: Input a stack ID or name and view all flashcards of that stack
                         break;
                     case "C":
@@ -204,7 +220,8 @@ namespace FlashCards
                 string userChoice = RemoveSpecials(Console.ReadLine());
                 if (userChoice == "0")
                 {
-                    break;
+                    stackName = "none";
+                    return false;
                 }
 
                 correctInput = StackController.CheckStackExists(userChoice);

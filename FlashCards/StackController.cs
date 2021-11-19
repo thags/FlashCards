@@ -10,6 +10,26 @@ namespace FlashCards
 {
     class StackController
     {
+        public static int GetIdFromName(string name)
+        {
+            SqlConnection connection = DBManager.OpenSql();
+
+            string sqlCommand = $"SELECT TOP 1 * FROM Stacks WHERE Name = '{name}'";
+            int answer = -1;
+
+            SqlCommand command = new SqlCommand(sqlCommand, connection);
+            SqlDataReader dataReader = command.ExecuteReader();
+
+            while (dataReader.Read())
+            {
+                answer = (int)dataReader.GetValue(0);
+            }
+
+            command.Dispose();
+            connection.Close();
+
+            return answer;
+        }
         public static List<Stack> GetStacks()
         {
             SqlConnection connection = DBManager.OpenSql();
