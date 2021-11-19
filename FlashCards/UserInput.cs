@@ -134,8 +134,10 @@ namespace FlashCards
                 Console.WriteLine("--------------------------");
                 Console.WriteLine($"Current working stack: {currentStackToWorkOn} \n");
                 Console.WriteLine("0 to return to main menu");
+                Console.WriteLine("X to change current stack");
                 Console.WriteLine("V to view all Flashcards in stack");
                 Console.WriteLine("C to Create a Flashcard in current stack");
+                
                 //Console.WriteLine("R to Edit a Flashcard");
                 //Console.WriteLine("D to Delete a Flashcard");
 
@@ -145,8 +147,17 @@ namespace FlashCards
                 switch (choice)
                 {
                     case "0":
-                        exit = true;
                         Console.Clear();
+                        exit = true;
+                        break;
+                    case "X":
+                        Console.Clear();
+                        Console.WriteLine("Choose a stack of flashcards to interact with: ");
+                        bool didReturnRealStack = GetCurrentStack(out string potentialStack);
+                        if (didReturnRealStack)
+                        {
+                            currentStackToWorkOn = potentialStack;
+                        }
                         break;
                     case "V":
                         Console.Clear();
