@@ -137,8 +137,7 @@ namespace FlashCards
                 Console.WriteLine("X to change current stack");
                 Console.WriteLine("V to view all Flashcards in stack");
                 Console.WriteLine("C to Create a Flashcard in current stack");
-                
-                //Console.WriteLine("R to Edit a Flashcard");
+                Console.WriteLine("E to Edit a Flashcard");
                 //Console.WriteLine("D to Delete a Flashcard");
 
                 Console.WriteLine("--------------------------");
@@ -170,9 +169,14 @@ namespace FlashCards
                         string backOfCard = GetBackFlashCard();
                         FlashcardController.CreateFlashCard(currentStackToWorkOn, frontOfCard, backOfCard);
                         break;
-                    case "R":
+                    case "E":
                         Console.Clear();
-                        
+                        //get an ID of a flashcard to edit (verify that card exists)
+                        bool realCard = GetCardId(out int cardId);
+                        if (realCard)
+                        {
+                            FlashCardEditMenu(cardId);
+                        }
                         break;
                     case "D":
                         Console.Clear();
@@ -277,6 +281,83 @@ namespace FlashCards
                 }
             }
             return userInput;
+        }
+        public static bool GetCardId(out int cardId)
+        {
+            cardId = -1;
+            bool correctInput = false;
+            bool realCard = false;
+            while (!correctInput && !realCard)
+            {
+                Console.WriteLine("Input an ID of a flashcard");
+                Console.WriteLine("Or 0 to exit");
+
+                correctInput = int.TryParse(Console.ReadLine(), out int userInput);
+                
+                if (!correctInput)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Incorrect Input, try again \n");
+                }
+                else
+                {
+                    switch (userInput)
+                    {
+                        case 0:
+                            return false;
+                        default:
+                            realCard = FlashcardController.CheckCardExists(userInput);
+                            if (!realCard)
+                            {
+                                Console.Clear();
+                                Console.WriteLine("Not a valid flashcard id, try again");
+                            }
+                            else
+                            {
+                                cardId = userInput;
+                                return true;
+                            }
+                            break;
+                    }
+                    
+                }
+                
+            }
+            return false;
+        }
+
+        public static void FlashCardEditMenu(int cardId)
+        {
+            bool exit = false;
+            while (!exit)
+            {
+                Console.Clear();
+                TableVisualisationEngine.ViewTable(FlashcardController.GetCardById(cardId));
+                Console.WriteLine("\n");
+                Console.WriteLine("0 to return to previous menu");
+                Console.WriteLine("F to edit the front of the card");
+                Console.WriteLine("B to edit the back of the card");
+
+                string userChoice = GetUserMenuChoice();
+                switch (userChoice)
+                {
+                    case "0":
+                        Console.Clear();
+                        exit = true;
+                        break;
+                    case "F":
+                        string front = GetFrontFlashCard();
+                        FlashcardController.UpdateCard(cardId, front, "Front");
+                        break;
+                    case "B":
+                        string back = GetBackFlashCard();
+                        FlashcardController.UpdateCard(cardId, back, "Back");
+                        break;
+                    default:
+                        break;
+                }
+            }
+            
         }
     }
 }

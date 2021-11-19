@@ -30,6 +30,26 @@ namespace FlashCards
 
             return answer;
         }
+        public static string GetNameFromId(int Id)
+        {
+            SqlConnection connection = DBManager.OpenSql();
+
+            string sqlCommand = $"SELECT TOP 1 * FROM Stacks WHERE Id = {Id}";
+            string answer = "null";
+
+            SqlCommand command = new SqlCommand(sqlCommand, connection);
+            SqlDataReader dataReader = command.ExecuteReader();
+
+            while (dataReader.Read())
+            {
+                answer = (string)dataReader.GetValue(1);
+            }
+
+            command.Dispose();
+            connection.Close();
+
+            return answer;
+        }
         public static List<Stack> GetStacks()
         {
             SqlConnection connection = DBManager.OpenSql();
