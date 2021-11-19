@@ -27,9 +27,11 @@ namespace FlashCards
                         exitProgram = true;
                         break;
                     case "S":
+                        Console.Clear();
                         StacksMenu();
                         break;
                     case "F":
+                        Console.Clear();
                         FlashCardsMenu();
                         break;
                     default:
@@ -138,7 +140,7 @@ namespace FlashCards
                 Console.WriteLine("V to view all Flashcards in stack");
                 Console.WriteLine("C to Create a Flashcard in current stack");
                 Console.WriteLine("E to Edit a Flashcard");
-                //Console.WriteLine("D to Delete a Flashcard");
+                Console.WriteLine("D to Delete a Flashcard");
 
                 Console.WriteLine("--------------------------");
 
@@ -180,7 +182,12 @@ namespace FlashCards
                         break;
                     case "D":
                         Console.Clear();
-                        
+                        realCard = GetCardId(out cardId);
+                        if (realCard)
+                        {
+                            FlashcardController.Delete(cardId);
+                            Console.WriteLine("Flashcard deleted");
+                        }
                         break;
 
                     default:

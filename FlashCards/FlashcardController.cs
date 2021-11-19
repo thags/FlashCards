@@ -121,5 +121,21 @@ namespace FlashCards
             command.Dispose();
             connection.Close();
         }
+        public static void Delete(int Id)
+        {
+            SqlConnection connection = DBManager.OpenSql();
+            SqlCommand command;
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            string sql;
+
+            sql = $"DELETE FROM flashcards WHERE Id = {Id}";
+            command = new SqlCommand(sql, connection);
+
+            adapter.DeleteCommand = new SqlCommand(sql, connection);
+            adapter.DeleteCommand.ExecuteNonQuery();
+
+            command.Dispose();
+            connection.Close();
+        }
     }
 }
