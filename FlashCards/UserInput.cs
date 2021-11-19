@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace FlashCards
@@ -157,6 +158,11 @@ namespace FlashCards
             }
         }
         private static string GetUserMenuChoice() => Console.ReadLine().ToUpper();
+        private static string RemoveSpecials(string s)
+        {
+            s = Regex.Replace(s, "[^a-zA-Z0-9]", "");
+            return s;
+        }
 
         public static bool GetNewStackName(out string newStackName)
         {
@@ -166,7 +172,7 @@ namespace FlashCards
             {
                 Console.WriteLine("Input a name for the new stack");
                 Console.WriteLine("Or input 0 to go back");
-                string userChoice = Console.ReadLine();
+                string userChoice = RemoveSpecials(Console.ReadLine());
                 if (userChoice == "0")
                 {
                     break;
@@ -195,7 +201,7 @@ namespace FlashCards
             {
                 Console.WriteLine("Input a current stack name");
                 Console.WriteLine("Or input 0 to exit input");
-                string userChoice = Console.ReadLine();
+                string userChoice = RemoveSpecials(Console.ReadLine());
                 if (userChoice == "0")
                 {
                     break;
