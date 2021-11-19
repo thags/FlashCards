@@ -2,10 +2,10 @@
 
 # Requirements
   ### Part 1: 
-  - [ ] You should be able to create stacks of flashcards.
+  - [x] You should be able to create stacks of flashcards.
   - [x] You should be able to change the stack's name and delete stack
-  - [ ] You should be able to create, update, delete flashcards
-  - [ ] All flashcards need to be part of at least one stack
+  - [x] You should be able to create, update, delete flashcards
+  - [x] All flashcards need to be part of at least one stack
   - [x] If you delete a stack, all flashcards will be deleted
   - [x] SQLite isn't allowed. You have to use SQL Server.
   
@@ -16,6 +16,6 @@
   
 # Technical Considerations
   - [x] You need to look into "One to many" relationships in SQL, where you'll use a foreign key to link the "stacks" and "flashcards"
-  - [ ] You need to have classes with clear separation of concerns: UserInput.cs, TableVisualisationEngine.cs
+  - [x] You need to have classes with clear separation of concerns: UserInput.cs, TableVisualisationEngine.cs
   - [x] You need to map your data into "Models". Example: Once you get your stack from the database, it will be stored into a List<Stack>()
   - [x] Connection strings and databasepaths need to be in a web.config file. 
