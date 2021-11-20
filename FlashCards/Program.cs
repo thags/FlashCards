@@ -10,7 +10,6 @@ namespace FlashCards
             DBManager.CreateDatabase();
             DBManager.CreateStackTable();
             DBManager.CreateFlashCardTable();
-            DBManager.CreateFlashCardForeignKey();
             UserInput.GetUserInput();
         }
     }
