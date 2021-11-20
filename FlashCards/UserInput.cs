@@ -70,7 +70,7 @@ namespace FlashCards
                         {
                             StackController.InsertStack(newStackName);
                             Console.WriteLine("Newly created stack is:");
-                            TableVisualisationEngine.ViewTable(StackController.GetStacks(1, "DESC"));
+                            TableVisualisationEngine.ViewTable(StackController.GetLastStack());
                             WaitForUser();
                         }
                         else

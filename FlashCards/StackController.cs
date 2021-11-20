@@ -58,6 +58,33 @@ namespace FlashCards
                 return false;
             }
         }
+        public static List<Stack> GetLastStack()
+        {
+            SqlConnection connection = DBManager.OpenSql();
+
+            var stackList = new List<Stack> { };
+            string sqlCommand = $"SELECT TOP 1 * FROM Stacks ORDER BY Id ASC";
+
+            SqlCommand command = new SqlCommand(sqlCommand, connection);
+            SqlDataReader dataReader = command.ExecuteReader();
+
+            while (dataReader.Read())
+            {
+                int Id = (int)dataReader.GetValue(0);
+                string Name = (string)dataReader.GetValue(1);
+                Stack newStack = new Stack
+                {
+                    Id = Id,
+                    Name = Name
+                };
+                stackList.Add(newStack);
+            }
+
+            command.Dispose();
+            connection.Close();
+
+            return stackList;
+        }
         public static List<Stack> GetStacks()
         {
             SqlConnection connection = DBManager.OpenSql();
