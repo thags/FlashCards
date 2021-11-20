@@ -71,13 +71,12 @@ namespace FlashCards
                             StackController.InsertStack(newStackName);
                             Console.WriteLine("Newly created stack is:");
                             TableVisualisationEngine.ViewTable(StackController.GetLastStack());
-                            WaitForUser();
                         }
                         else
                         {
                             Console.WriteLine("No new stack created, invalid name input");
-                            WaitForUser();
                         }
+                        WaitForUser();
                         break;
                     case "R":
                         Console.Clear();
@@ -92,6 +91,7 @@ namespace FlashCards
                                 StackController.UpdateStackName(stackToUpdate, newName);
                             }
                         }
+                        Console.Clear();
                         break;
                     case "D":
                         Console.Clear();
@@ -100,8 +100,9 @@ namespace FlashCards
                         chosenStackExists = GetCurrentStack(out string stackToDelete);
                         if (chosenStackExists)
                         {
-                            StackController.Delete(stackToDelete);
+                            StackController.DeleteStack(stackToDelete);
                         }
+                        Console.Clear();
                         break;
 
                     default:
@@ -202,7 +203,7 @@ namespace FlashCards
                         string backOfCard = GetBackFlashCard();
                         FlashcardController.CreateFlashCard(currentStackToWorkOn, frontOfCard, backOfCard);
                         Console.WriteLine("Newly created card is: \n");
-                        TableVisualisationEngine.ViewTable(FlashcardController.GetXCardsInStack(currentStackToWorkOn, 1));
+                        TableVisualisationEngine.ViewTable(FlashcardController.GetLastCardInStack(currentStackToWorkOn));
                         WaitForUser();
                         break;
                     case "E":

@@ -208,7 +208,7 @@ namespace FlashCards
             command.Dispose();
             connection.Close();
         }
-        public static void Delete(string name)
+        public static void DeleteStack(string name)
         {
             SqlConnection connection = DBManager.OpenSql();
             SqlCommand command;

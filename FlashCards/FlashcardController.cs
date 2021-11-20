@@ -113,6 +113,38 @@ namespace FlashCards
 
             return stackList;
         }
+        public static List<Flashcard> GetLastCardInStack(string stackName)
+        {
+            SqlConnection connection = DBManager.OpenSql();
+
+            var stackList = new List<Flashcard> { };
+            int stackId = StackController.GetIdFromName(stackName);
+            string sqlCommand = $"SELECT TOP 1 * FROM Flashcards WHERE StackId = {stackId} ORDER BY Id DESC";
+
+            SqlCommand command = new SqlCommand(sqlCommand, connection);
+            SqlDataReader dataReader = command.ExecuteReader();
+
+            while (dataReader.Read())
+            {
+                int Id = (int)dataReader.GetValue(0);
+                int Stack = (int)dataReader.GetValue(1);
+                string Front = (string)dataReader.GetValue(2);
+                string Back = (string)dataReader.GetValue(3);
+                Flashcard newStack = new Flashcard
+                {
+                    Id = Id,
+                    StackName = stackName,
+                    Front = Front,
+                    Back = Back,
+                };
+                stackList.Add(newStack);
+            }
+
+            command.Dispose();
+            connection.Close();
+
+            return stackList;
+        }
         public static void CreateFlashCard(string stackName, string front, string back)
         {
             SqlConnection connection = DBManager.OpenSql();
