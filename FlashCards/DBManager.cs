@@ -17,15 +17,15 @@ namespace FlashCards
                 string filePath = XmlManager.ReadConfig("dbFilePath");
                 SqlConnection myConn = new SqlConnection($"Server={server};Integrated security={integratedSecurity}");
 
-                str = $"CREATE DATABASE {dbFileName} ON PRIMARY " +
-                 "(NAME = Flashcards, " +
-                 $"FILENAME = N'{filePath}\\{dbFileName}.mdf', " +
-                 "SIZE = 2MB, MAXSIZE = 10MB, FILEGROWTH = 10%)" +
-                 "LOG ON (NAME = Flashcards_Log, " +
-                 $"FILENAME = '{filePath}\\{dbFileName}Log.ldf', " +
-                 "SIZE = 1MB, " +
-                 "MAXSIZE = 5MB, " +
-                 "FILEGROWTH = 10%)";
+                str = $@"CREATE DATABASE {dbFileName} ON PRIMARY
+                        (NAME = Flashcards,
+                        FILENAME = N'{filePath}\\{dbFileName}.mdf',
+                        SIZE = 2MB, MAXSIZE = 10MB, FILEGROWTH = 10%)
+                        LOG ON (NAME = Flashcards_Log,
+                        FILENAME = '{filePath}\\{dbFileName}Log.ldf',
+                        SIZE = 1MB,
+                        MAXSIZE = 5MB,
+                        FILEGROWTH = 10%)";
 
                 SqlCommand myCommand = new SqlCommand(str, myConn);
                 try
@@ -62,12 +62,12 @@ namespace FlashCards
                 String str;
                 SqlConnection myConn = OpenSql();
 
-                str = $"CREATE TABLE [dbo].[Stacks]("+
-                        "[Id][int] IDENTITY(1, 1) NOT NULL,"+
-                        "[Name] [nvarchar](max)NOT NULL," +
-                        "CONSTRAINT[PK_Stacks] PRIMARY KEY CLUSTERED([Id] ASC)" +
-                        "WITH(PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON,"+
-                        "OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON[PRIMARY]) ON[PRIMARY] TEXTIMAGE_ON[PRIMARY]";
+                str = $@"CREATE TABLE [dbo].[Stacks](
+                        [Id][int] IDENTITY(1, 1) NOT NULL,
+                        [Name] [nvarchar](max)NOT NULL,
+                        CONSTRAINT[PK_Stacks] PRIMARY KEY CLUSTERED([Id] ASC)
+                        WITH(PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON,
+                        OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON[PRIMARY]) ON[PRIMARY] TEXTIMAGE_ON[PRIMARY]";
 
                 SqlCommand myCommand = new SqlCommand(str, myConn);
                 try
@@ -103,15 +103,15 @@ namespace FlashCards
                 String str;
                 SqlConnection myConn = OpenSql();
 
-                str = $"CREATE TABLE [dbo].[Flashcards](" +
-                        "[Id][int] IDENTITY(1, 1) NOT NULL," +
-                        "[StackId] [int] NOT NULL,"+
-                        "[Front][nvarchar](max) NOT NULL," +
-                        "[Back] [nvarchar](max)NOT NULL," +
-                        "CONSTRAINT[PK_Flashcards] PRIMARY KEY CLUSTERED" +
-                        "([Id] ASC)WITH" +
-                        "(PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF)" +
-                        "ON[PRIMARY]) ON[PRIMARY] TEXTIMAGE_ON[PRIMARY]";
+                str = $@"CREATE TABLE [dbo].[Flashcards](
+                        [Id][int] IDENTITY(1, 1) NOT NULL,
+                        [StackId] [int] NOT NULL,
+                        [Front][nvarchar](max) NOT NULL,
+                        [Back] [nvarchar](max)NOT NULL,
+                        CONSTRAINT[PK_Flashcards] PRIMARY KEY CLUSTERED 
+                        ([Id] ASC)WITH  
+                        (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF)
+                        ON[PRIMARY]) ON[PRIMARY] TEXTIMAGE_ON[PRIMARY]";
 
                 SqlCommand myCommand = new SqlCommand(str, myConn);
                 try
@@ -147,10 +147,10 @@ namespace FlashCards
                 String str;
                 SqlConnection myConn = OpenSql();
 
-                str = $"ALTER TABLE [dbo].[Flashcards] WITH CHECK ADD CONSTRAINT [FK_Flashcards_Stacks] FOREIGN KEY([StackId]) "+
-                        "REFERENCES[dbo].[Stacks]([Id]) " +
-                        "ON UPDATE CASCADE " +
-                        "ON DELETE CASCADE";
+                str = $@"ALTER TABLE [dbo].[Flashcards] WITH CHECK ADD CONSTRAINT [FK_Flashcards_Stacks] FOREIGN KEY([StackId]) 
+                        REFERENCES[dbo].[Stacks]([Id]) 
+                        ON UPDATE CASCADE 
+                        ON DELETE CASCADE";
 
                 SqlCommand myCommand = new SqlCommand(str, myConn);
                 try

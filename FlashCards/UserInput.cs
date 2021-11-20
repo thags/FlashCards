@@ -12,8 +12,8 @@ namespace FlashCards
             {
                 Console.WriteLine("\n --------------------------");
                 Console.WriteLine("0 to exit");
-                Console.WriteLine("S to View, Create, Delete or Rename Stacks");
-                Console.WriteLine("F to View, Create, Delete or Rename Flashcards");
+                Console.WriteLine("S to Manage Stacks");
+                Console.WriteLine("F to Manage FlashCards");
                 Console.WriteLine("-------------------------- \n");
 
                 string choice = GetUserMenuChoice();
