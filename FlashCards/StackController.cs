@@ -111,7 +111,7 @@ namespace FlashCards
 
             return stackList;
         }
-        public static List<Stack> GetStacks(int XAmount, string order = "ASC")
+        public static List<Stack> GetXStacks(int XAmount, string order = "ASC")
         {
             SqlConnection connection = DBManager.OpenSql();
 

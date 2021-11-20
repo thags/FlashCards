@@ -81,7 +81,7 @@ namespace FlashCards
                     case "R":
                         Console.Clear();
                         Console.WriteLine("5 Most recent stacks are: \n");
-                        TableVisualisationEngine.ViewTable(StackController.GetStacks(5, "DESC"));
+                        TableVisualisationEngine.ViewTable(StackController.GetXStacks(5, "DESC"));
                         bool chosenStackExists = GetCurrentStack(out string stackToUpdate);
                         if (chosenStackExists)
                         {
@@ -96,7 +96,7 @@ namespace FlashCards
                     case "D":
                         Console.Clear();
                         Console.WriteLine("5 Most recent stacks are: \n");
-                        TableVisualisationEngine.ViewTable(StackController.GetStacks(5, "DESC"));
+                        TableVisualisationEngine.ViewTable(StackController.GetXStacks(5, "DESC"));
                         chosenStackExists = GetCurrentStack(out string stackToDelete);
                         if (chosenStackExists)
                         {
@@ -122,7 +122,7 @@ namespace FlashCards
             while (!stackCheck)
             {
                 Console.WriteLine("5 Most recent stacks are: \n");
-                TableVisualisationEngine.ViewTable(StackController.GetStacks(5, "DESC"));
+                TableVisualisationEngine.ViewTable(StackController.GetXStacks(5, "DESC"));
                 Console.WriteLine("\n Choose a stack of flashcards to interact with: ");
                 stackCheck = GetCurrentStack(out currentStackToWorkOn);
                 if (stackCheck)
