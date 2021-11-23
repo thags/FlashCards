@@ -2,7 +2,7 @@
 using System;
 using ConsoleTableExt;
 using FlashCards.Models;
-
+using System.Data;
 
 namespace FlashCards
 {
@@ -33,12 +33,30 @@ namespace FlashCards
             }
             else
             {
+                DataTable parsedTable = ParseFlashcardTableData(tableData);
+
                 ConsoleTableBuilder
-               .From(tableData)
+               .From(parsedTable)
+               .WithTitle($"Stack: {tableData[0].StackName}")
                .WithFormat(ConsoleTableBuilderFormat.Alternative)
                .ExportAndWriteLine(TableAligntment.Left);
             }
             Console.Write("\n");
+        }
+
+        private static DataTable ParseFlashcardTableData(List<Flashcard> tableData)
+        {
+            DataTable fcardTable = new DataTable();
+            fcardTable.Columns.Add("Id", typeof(int));
+            fcardTable.Columns.Add("Front", typeof(string));
+            fcardTable.Columns.Add("Back", typeof(string));
+
+            foreach (Flashcard fcard in tableData)
+            {
+                fcardTable.Rows.Add(fcard.Id, fcard.Front, fcard.Back);
+            }
+
+            return fcardTable;
         }
     }
 }

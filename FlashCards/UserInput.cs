@@ -128,6 +128,7 @@ namespace FlashCards
                 if (stackCheck)
                 {
                     exit = false;
+                    Console.Clear();
                 }
                 else
                 {
@@ -138,8 +139,6 @@ namespace FlashCards
             
             while (!exit)
             {
-                //May be better to choose which stack to be within first, and then a new menu
-                //where a user can edit/view/create/delete cards within that stack
                 Console.WriteLine("\n --------------------------");
                 Console.WriteLine($"Current working stack: {currentStackToWorkOn} \n");
                 Console.WriteLine("0 to return to main menu");
@@ -208,6 +207,8 @@ namespace FlashCards
                         break;
                     case "E":
                         Console.Clear();
+                        Console.WriteLine("5 most recent cards in stack are: ");
+                        TableVisualisationEngine.ViewTable(FlashcardController.GetXCardsInStack(currentStackToWorkOn, 5));
                         bool realCard = GetCardId(out int cardId);
                         if (realCard)
                         {
