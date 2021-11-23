@@ -46,6 +46,7 @@
 
 ## Helpful Resources
 
+- The help and advice of my mentor [Cappuccinocodes](https://github.com/cappuccinocodes)
 - [SQL one to many](https://www.youtube.com/watch?v=3grhQWDpFm0)
 - [Foreign key in SQL management studio](https://www.youtube.com/watch?v=TpKcAmaaBts)
 - [W3 schools SQL commands](https://www.w3schools.com/sql)
