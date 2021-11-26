@@ -63,7 +63,7 @@ namespace FlashCards
             SqlConnection connection = DBManager.OpenSql();
 
             var stackList = new List<Stack> { };
-            string sqlCommand = $"SELECT TOP 1 * FROM Stacks ORDER BY Id ASC";
+            string sqlCommand = $"SELECT TOP 1 * FROM Stacks ORDER BY Id DESC";
 
             SqlCommand command = new SqlCommand(sqlCommand, connection);
             SqlDataReader dataReader = command.ExecuteReader();

@@ -71,7 +71,8 @@ namespace FlashCards
                         {
                             StackController.InsertStack(newStackName);
                             Console.WriteLine("Newly created stack is:");
-                            //TableVisualisationEngine.ViewTable(StackController.GetLastStack());
+                            viewStacks = TableVisualisationEngine.MapStacksToDTO(StackController.GetLastStack());
+                            TableVisualisationEngine.ViewTable(viewStacks);
                         }
                         else
                         {
@@ -82,7 +83,7 @@ namespace FlashCards
                     case "R":
                         Console.Clear();
                         Console.WriteLine("5 Most recent stacks are: \n");
-                        //TableVisualisationEngine.ViewTable(StackController.GetXStacks(5, "DESC"));
+                        DisplayLatest5Stacks();
                         bool chosenStackExists = GetCurrentStack(out string stackToUpdate);
                         if (chosenStackExists)
                         {
@@ -97,7 +98,7 @@ namespace FlashCards
                     case "D":
                         Console.Clear();
                         Console.WriteLine("5 Most recent stacks are: \n");
-                        //TableVisualisationEngine.ViewTable(StackController.GetXStacks(5, "DESC"));
+                        DisplayLatest5Stacks();
                         chosenStackExists = GetCurrentStack(out string stackToDelete);
                         if (chosenStackExists)
                         {
@@ -123,7 +124,7 @@ namespace FlashCards
             while (!stackCheck)
             {
                 Console.WriteLine("5 Most recent stacks are: \n");
-                //TableVisualisationEngine.ViewTable(StackController.GetXStacks(5, "DESC"));
+                DisplayLatest5Stacks();
                 Console.WriteLine("\n Choose a stack of flashcards to interact with: ");
                 stackCheck = GetCurrentStack(out currentStackToWorkOn);
                 if (stackCheck)
@@ -421,6 +422,11 @@ namespace FlashCards
             }
             stackName = "Invalid";
             return correctInput;
+        }
+        private static void DisplayLatest5Stacks()
+        {
+            var viewStacks = TableVisualisationEngine.MapStacksToDTO(StackController.GetXStacks(5, "DESC"));
+            TableVisualisationEngine.ViewTable(viewStacks);
         }
     }
 }
