@@ -2,13 +2,15 @@
 using System;
 using ConsoleTableExt;
 using FlashCards.Models;
+using FlashCards.Models.DTOs;
 using System.Data;
+
 
 namespace FlashCards
 {
     class TableVisualisationEngine
     {
-        public static void ViewTable(List<Stack> tableData)
+        public static void ViewTable(List<StacksToView> tableData)
         {
             if (tableData.Count == 0)
             {
@@ -57,6 +59,19 @@ namespace FlashCards
             }
 
             return fcardTable;
+        }
+
+        public static List<StacksToView> MapStacksToDTO(List<Stack> unMapped)
+        {
+            List<StacksToView> stackView = new List<StacksToView> { };
+            foreach (Stack s in unMapped)
+            {
+               StacksToView mappedStack = new StacksToView {
+                   Name = s.Name
+               };
+               stackView.Add(mappedStack);
+            }
+            return stackView;
         }
     }
 }
