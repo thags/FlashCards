@@ -178,7 +178,8 @@ namespace FlashCards
                         break;
                     case "V":
                         Console.Clear();
-                        TableVisualisationEngine.ViewTable(FlashcardController.GetAllCardsInStack(currentStackToWorkOn));
+                        var viewFlashcards = TableVisualisationEngine.MapFlashcardsToDTO(FlashcardController.GetAllCardsInStack(currentStackToWorkOn));
+                        TableVisualisationEngine.ViewTable(viewFlashcards, currentStackToWorkOn);
                         WaitForUser();
                         break;
                     case "A":
@@ -189,7 +190,8 @@ namespace FlashCards
                         bool isInt = int.TryParse(Console.ReadLine(), out int amount);
                         if (isInt)
                         {
-                            TableVisualisationEngine.ViewTable(FlashcardController.GetXCardsInStack(currentStackToWorkOn, amount));
+                            viewFlashcards = TableVisualisationEngine.MapFlashcardsToDTO(FlashcardController.GetXCardsInStack(currentStackToWorkOn, amount));
+                            TableVisualisationEngine.ViewTable(viewFlashcards, currentStackToWorkOn);
                             WaitForUser();
                         }
                         else
@@ -204,19 +206,22 @@ namespace FlashCards
                         string backOfCard = GetBackFlashCard();
                         FlashcardController.CreateFlashCard(currentStackToWorkOn, frontOfCard, backOfCard);
                         Console.WriteLine("Newly created card is: \n");
-                        TableVisualisationEngine.ViewTable(FlashcardController.GetLastCardInStack(currentStackToWorkOn));
+                        viewFlashcards = TableVisualisationEngine.MapFlashcardsToDTO(FlashcardController.GetLastCardInStack(currentStackToWorkOn));
+                        TableVisualisationEngine.ViewTable(viewFlashcards, currentStackToWorkOn);
                         WaitForUser();
                         break;
                     case "E":
                         Console.Clear();
                         Console.WriteLine("5 most recent cards in stack are: ");
-                        TableVisualisationEngine.ViewTable(FlashcardController.GetXCardsInStack(currentStackToWorkOn, 5));
+                        viewFlashcards = TableVisualisationEngine.MapFlashcardsToDTO(FlashcardController.GetXCardsInStack(currentStackToWorkOn, 5));
+                        TableVisualisationEngine.ViewTable(viewFlashcards, currentStackToWorkOn);
                         bool realCard = GetCardId(out int cardId);
                         if (realCard)
                         {
-                            FlashCardEditMenu(cardId);
+                            FlashCardEditMenu(cardId, currentStackToWorkOn);
                             Console.WriteLine("Card after edit is: \n");
-                            TableVisualisationEngine.ViewTable(FlashcardController.GetCardById(cardId));
+                            viewFlashcards = TableVisualisationEngine.MapFlashcardsToDTO(FlashcardController.GetCardById(cardId));
+                            TableVisualisationEngine.ViewTable(viewFlashcards, currentStackToWorkOn);
                             WaitForUser();
                         }
                         else
@@ -244,13 +249,14 @@ namespace FlashCards
                 }
             }
         }
-        private static void FlashCardEditMenu(int cardId)
+        private static void FlashCardEditMenu(int cardId, string currentStackToWorkOn)
         {
             bool exit = false;
             while (!exit)
             {
                 Console.Clear();
-                TableVisualisationEngine.ViewTable(FlashcardController.GetCardById(cardId));
+                var viewFlashcards = TableVisualisationEngine.MapFlashcardsToDTO(FlashcardController.GetCardById(cardId));
+                TableVisualisationEngine.ViewTable(viewFlashcards, currentStackToWorkOn);
                 Console.WriteLine("\n");
                 Console.WriteLine("--------------------------");
                 Console.WriteLine("0 to return to previous menu");

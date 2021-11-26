@@ -27,7 +27,7 @@ namespace FlashCards
             
         }
 
-        public static void ViewTable(List<Flashcard> tableData)
+        public static void ViewTable(List<FlashcardsToView> tableData, string stackName)
         {
             if (tableData.Count == 0)
             {
@@ -35,30 +35,13 @@ namespace FlashCards
             }
             else
             {
-                DataTable parsedTable = ParseFlashcardTableData(tableData);
-
                 ConsoleTableBuilder
-               .From(parsedTable)
-               .WithTitle($"Stack: {tableData[0].StackName}")
+               .From(tableData)
+               .WithTitle($"Stack: {stackName}")
                .WithFormat(ConsoleTableBuilderFormat.Alternative)
                .ExportAndWriteLine(TableAligntment.Left);
             }
             Console.Write("\n");
-        }
-
-        private static DataTable ParseFlashcardTableData(List<Flashcard> tableData)
-        {
-            DataTable fcardTable = new DataTable();
-            fcardTable.Columns.Add("Id", typeof(int));
-            fcardTable.Columns.Add("Front", typeof(string));
-            fcardTable.Columns.Add("Back", typeof(string));
-
-            foreach (Flashcard fcard in tableData)
-            {
-                fcardTable.Rows.Add(fcard.Id, fcard.Front, fcard.Back);
-            }
-
-            return fcardTable;
         }
 
         public static List<StacksToView> MapStacksToDTO(List<Stack> unMapped)
@@ -70,6 +53,22 @@ namespace FlashCards
                    Name = s.Name
                };
                stackView.Add(mappedStack);
+            }
+            return stackView;
+        }
+
+        public static List<FlashcardsToView> MapFlashcardsToDTO(List<Flashcard> unMapped)
+        {
+            List<FlashcardsToView> stackView = new List<FlashcardsToView> { };
+            foreach (Flashcard f in unMapped)
+            {
+                FlashcardsToView mappedStack = new FlashcardsToView
+                {
+                    Id = f.Id,
+                    Front = f.Front,
+                    Back = f.Back
+                };
+                stackView.Add(mappedStack);
             }
             return stackView;
         }
