@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FlashCards.Models.DTOs;
+using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace FlashCards
@@ -14,6 +16,7 @@ namespace FlashCards
                 Console.WriteLine("0 to exit");
                 Console.WriteLine("S to Manage Stacks");
                 Console.WriteLine("F to Manage FlashCards");
+                Console.WriteLine("R to Study");
                 Console.WriteLine("-------------------------- \n");
 
                 string choice = GetUserMenuChoice();
@@ -29,6 +32,10 @@ namespace FlashCards
                     case "F":
                         Console.Clear();
                         FlashCardsMenu();
+                        break;
+                    case "R":
+                        Console.Clear();
+                        StudyMenu();
                         break;
                     default:
                         Console.WriteLine("Incorrect input, try again");
@@ -249,6 +256,48 @@ namespace FlashCards
                 }
             }
         }
+        private static void StudyMenu()
+        {
+            bool exit = false;
+            string stackChoice;
+            //choose a stack
+            bool correctChoice;
+            do
+            {
+                correctChoice = GetCurrentStack(out stackChoice);
+                if (stackChoice == "none!")
+                {
+                    exit = true;
+                    break;
+                }
+            }
+            while (!correctChoice);
+
+            //loop through the flashcards in the stack
+            //get an input and check that the answer matches the solution
+            while (!exit)
+            {
+                var flashcardsFromStack = FlashcardController.GetAllCardsInStack(stackChoice);
+                var flashcardsDTOFromStack = TableVisualisationEngine.MapFlashcardsToDTO(flashcardsFromStack);
+                foreach (FlashcardsToView fcard in flashcardsDTOFromStack)
+                {
+                    var frontOfCard = new List<string>();
+                    frontOfCard.Add(fcard.Front);
+                    TableVisualisationEngine.ViewCard(frontOfCard, stackChoice);
+                    string guess = GetUserCardGuess();
+                    if (guess == "0")
+                    {
+                        exit = true;
+                        Console.Clear();
+                        break;
+                    }
+                    bool correctAnswer = CheckAnswer(guess, fcard.Back);
+                    DisplayAnswerCorrectness(correctAnswer, guess, fcard.Back);
+                }
+            }
+            
+
+        }
         private static void FlashCardEditMenu(int cardId, string currentStackToWorkOn)
         {
             bool exit = false;
@@ -410,7 +459,7 @@ namespace FlashCards
                 string userChoice = RemoveSpecials(input);
                 if (userChoice == "0")
                 {
-                    stackName = "none";
+                    stackName = "none!";
                     return false;
                 }
 
@@ -433,6 +482,45 @@ namespace FlashCards
         {
             var viewStacks = TableVisualisationEngine.MapStacksToDTO(StackController.GetXStacks(5, "DESC"));
             TableVisualisationEngine.ViewTable(viewStacks);
+        }
+        private static string GetUserCardGuess()
+        {
+            Console.WriteLine("\n");
+            Console.WriteLine("Input your answer to this card \n");
+            Console.WriteLine("Or 0 to exit");
+            return Console.ReadLine().ToUpper();
+        }
+        private static bool CheckAnswer(string guess, string answer)
+        {
+            if (guess.ToUpper() == answer.ToUpper())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        private static void DisplayAnswerCorrectness(bool wasCorrect, string userGuess, string answer)
+        {
+            string statusMessage;
+            bool displayDifference;
+            if (wasCorrect)
+            {
+                statusMessage = "correct!";
+                displayDifference = false;
+            }
+            else
+            {
+                statusMessage = "wrong.";
+                displayDifference = true;
+            }
+            Console.WriteLine($"Your answer was {statusMessage}");
+            if (displayDifference)
+            {
+                Console.WriteLine($"You answered {userGuess}");
+                Console.WriteLine($"The Correct answer was {answer}");
+            }
         }
     }
 }

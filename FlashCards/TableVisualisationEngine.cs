@@ -44,6 +44,23 @@ namespace FlashCards
             Console.Write("\n");
         }
 
+        public static void ViewCard(List<string> tableData, string stackName)
+        {
+            if (tableData.Count == 0)
+            {
+                Console.WriteLine("Currently empty!");
+            }
+            else
+            {
+                ConsoleTableBuilder
+               .From(tableData)
+               .WithTitle($"Stack: {stackName}")
+               .WithFormat(ConsoleTableBuilderFormat.Alternative)
+               .ExportAndWriteLine(TableAligntment.Left);
+            }
+            Console.Write("\n");
+        }
+
         public static List<StacksToView> MapStacksToDTO(List<Stack> unMapped)
         {
             List<StacksToView> stackView = new List<StacksToView> { };
@@ -72,6 +89,9 @@ namespace FlashCards
             }
             return stackView;
         }
+
+        
+
     }
 }
 
