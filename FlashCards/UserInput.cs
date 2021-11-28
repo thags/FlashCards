@@ -311,6 +311,12 @@ namespace FlashCards
                     {
                         Console.WriteLine("Exiting Study session");
                         Console.WriteLine($"You got {amountCorrect} right out of {totalGuesses}");
+                        StudyController.InsertStudySession(new Models.StudySession
+                        {
+                            StackId = StackController.GetIdFromName(stackChoice),
+                            CorrectAnswers = amountCorrect,
+                            TotalGueses = totalGuesses,
+                        });
                         WaitForUser();
                         break;
                     }

@@ -128,6 +128,53 @@ namespace FlashCards
                 Console.WriteLine("Connection could not establish");
             }
         }
+
+        public static void CreateStudyTable()
+        {
+            try
+            {
+                string str;
+                SqlConnection myConn = OpenSql();
+
+                str = $@"CREATE TABLE [dbo].[Study](
+                        [Id][int] IDENTITY(1, 1) NOT NULL,
+                        [StackId] [int] NOT NULL,
+                        [Date][date] NOT NULL,
+                        [CorrectAnswers] [int] NOT NULL,
+                        [TotalGueses] [int] NOT NULL,
+                        CONSTRAINT[PK_Study] PRIMARY KEY CLUSTERED([Id] ASC),
+                        CONSTRAINT[FK_Study_Stacks] FOREIGN KEY([StackId]) 
+                        REFERENCES[dbo].[Stacks]([Id]) 
+                        ON UPDATE CASCADE 
+                        ON DELETE CASCADE)";
+
+                SqlCommand myCommand = new SqlCommand(str, myConn);
+                try
+                {
+                    myCommand.ExecuteNonQuery();
+                    Console.WriteLine("Study table created Successfully");
+                }
+                catch (System.Exception ex)
+                {
+                    if (ex.Message == "There is already an object named 'Study' in the database.")
+                    {
+                        Console.WriteLine("Study Table already Existed!");
+                    }
+                    else
+                    {
+                        Console.WriteLine(ex.ToString());
+                    }
+                }
+                finally
+                {
+                    myConn.Close();
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Connection could not establish");
+            }
+        }
         public static SqlConnection OpenSql()
         {
             string connectionString = ConfigurationManager.AppSettings.Get("ConnectionStringWithDatabase");
