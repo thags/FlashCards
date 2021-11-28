@@ -17,6 +17,7 @@ namespace FlashCards
                 Console.WriteLine("S to Manage Stacks");
                 Console.WriteLine("F to Manage FlashCards");
                 Console.WriteLine("R to Study");
+                Console.WriteLine("L to view study session data");
                 Console.WriteLine("-------------------------- \n");
 
                 string choice = GetUserMenuChoice();
@@ -36,6 +37,10 @@ namespace FlashCards
                     case "R":
                         Console.Clear();
                         StudyMenu();
+                        break;
+                    case "L":
+                        Console.Clear();
+                        ReportsMenu();
                         break;
                     default:
                         Console.WriteLine("Incorrect input, try again");
@@ -277,8 +282,6 @@ namespace FlashCards
             while (!correctChoice);
             Console.Clear();
 
-            //loop through the flashcards in the stack
-            //get an input and check that the answer matches the solution
             int amountCorrect = 0;
             int totalGuesses = 0;
             while (!exit)
@@ -325,6 +328,31 @@ namespace FlashCards
             }
             
 
+        }
+        private static void ReportsMenu()
+        {
+            bool exit = false;
+            while (!exit)
+            {
+                Console.WriteLine("\n --------------------------");
+                Console.WriteLine("0 to exit");
+                Console.WriteLine("A to view all study session data");
+                Console.WriteLine("-------------------------- \n");
+                string choice = GetUserMenuChoice();
+                switch (choice)
+                {
+                    case "0":
+                        exit = true;
+                        break;
+                    case "A":
+                        TableVisualisationEngine.ViewTable(StudyController.GetAllStudySessions());
+                        break;
+                    default:
+                        Console.WriteLine("Incorrect input, try again");
+                        WaitForUser();
+                        break;
+                }
+            }
         }
         private static void FlashCardEditMenu(int cardId, string currentStackToWorkOn)
         {

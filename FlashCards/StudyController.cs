@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using FlashCards.Models;
 using System.Data.SqlClient;
+using System;
 
 namespace FlashCards
 {
@@ -24,5 +25,40 @@ namespace FlashCards
             command.Dispose();
             connection.Close();
         }
+
+        public static List<StudySessionToView> GetAllStudySessions()
+        {
+            SqlConnection connection = DBManager.OpenSql();
+
+            var stackList = new List<StudySessionToView> { };
+            string sqlCommand = $"SELECT * FROM Study";
+
+            SqlCommand command = new SqlCommand(sqlCommand, connection);
+            SqlDataReader dataReader = command.ExecuteReader();
+
+            while (dataReader.Read())
+            {
+                string stackName = StackController.GetNameFromId((int)dataReader.GetValue(1));
+                DateTime date = (DateTime)dataReader.GetValue(2);
+                int correctAnswers = (int)dataReader.GetValue(3);
+                int totalGueses = (int)dataReader.GetValue(4);
+                double scorePercent = totalGueses / correctAnswers;
+                StudySessionToView study = new StudySessionToView
+                {
+                    StackName = stackName,
+                    Date = date,
+                    CorrectAnswers = correctAnswers,
+                    TotalGueses = totalGueses,
+                    ScorePercent = scorePercent
+                };
+                stackList.Add(study);
+            }
+
+            command.Dispose();
+            connection.Close();
+
+            return stackList;
+        }
+
     }
 }
