@@ -54,11 +54,10 @@ namespace FlashCards
             {
                 ConsoleTableBuilder
                .From(tableData)
-               .WithTitle($"Stack: {stackName}")
+               //.WithTitle($"Stack: {stackName}")
                .WithFormat(ConsoleTableBuilderFormat.Alternative)
                .ExportAndWriteLine(TableAligntment.Left);
             }
-            Console.Write("\n");
         }
 
         public static List<StacksToView> MapStacksToDTO(List<Stack> unMapped)

@@ -264,14 +264,18 @@ namespace FlashCards
             bool correctChoice;
             do
             {
+                Console.WriteLine("5 Most recent stacks are: \n");
+                DisplayLatest5Stacks();
                 correctChoice = GetCurrentStack(out stackChoice);
                 if (stackChoice == "none!")
                 {
                     exit = true;
+                    Console.Clear();
                     break;
                 }
             }
             while (!correctChoice);
+            Console.Clear();
 
             //loop through the flashcards in the stack
             //get an input and check that the answer matches the solution
@@ -288,11 +292,21 @@ namespace FlashCards
                     if (guess == "0")
                     {
                         exit = true;
-                        Console.Clear();
+                    }
+                    else
+                    {
+                        bool correctAnswer = CheckAnswer(guess, fcard.Back);
+                        DisplayAnswerCorrectness(correctAnswer, guess, fcard.Back);
+                        WaitForUser();
+                    }
+
+                    if (exit)
+                    {
+                        Console.WriteLine("Exiting Study session");
+                        WaitForUser();
                         break;
                     }
-                    bool correctAnswer = CheckAnswer(guess, fcard.Back);
-                    DisplayAnswerCorrectness(correctAnswer, guess, fcard.Back);
+                    
                 }
             }
             
@@ -486,9 +500,11 @@ namespace FlashCards
         private static string GetUserCardGuess()
         {
             Console.WriteLine("\n");
-            Console.WriteLine("Input your answer to this card \n");
-            Console.WriteLine("Or 0 to exit");
-            return Console.ReadLine().ToUpper();
+            Console.WriteLine("Input your answer to this card");
+            Console.WriteLine("Or 0 to exit \n");
+            string guess =  Console.ReadLine();
+            Console.WriteLine("\n");
+            return guess;
         }
         private static bool CheckAnswer(string guess, string answer)
         {
@@ -518,8 +534,8 @@ namespace FlashCards
             Console.WriteLine($"Your answer was {statusMessage}");
             if (displayDifference)
             {
-                Console.WriteLine($"You answered {userGuess}");
-                Console.WriteLine($"The Correct answer was {answer}");
+                Console.WriteLine($"\n You answered {userGuess}");
+                Console.WriteLine($"The Correct answer was {answer} \n");
             }
         }
     }
