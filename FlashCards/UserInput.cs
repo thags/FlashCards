@@ -279,6 +279,8 @@ namespace FlashCards
 
             //loop through the flashcards in the stack
             //get an input and check that the answer matches the solution
+            int amountCorrect = 0;
+            int totalGuesses = 0;
             while (!exit)
             {
                 var flashcardsFromStack = FlashcardController.GetAllCardsInStack(stackChoice);
@@ -296,6 +298,11 @@ namespace FlashCards
                     else
                     {
                         bool correctAnswer = CheckAnswer(guess, fcard.Back);
+                        if (correctAnswer)
+                        {
+                            amountCorrect++;
+                        }
+                        totalGuesses++;
                         DisplayAnswerCorrectness(correctAnswer, guess, fcard.Back);
                         WaitForUser();
                     }
@@ -303,6 +310,7 @@ namespace FlashCards
                     if (exit)
                     {
                         Console.WriteLine("Exiting Study session");
+                        Console.WriteLine($"You got {amountCorrect} right out of {totalGuesses}");
                         WaitForUser();
                         break;
                     }
