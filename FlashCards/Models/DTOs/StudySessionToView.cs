@@ -6,6 +6,6 @@
         public string Date { get; set; }
         public int CorrectAnswers { get; set; }
         public int TotalGueses { get; set; }
-        public double ScorePercent { get; set; }
+        public string ScorePercent { get; set; }
     }
 }

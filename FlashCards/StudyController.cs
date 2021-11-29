@@ -43,14 +43,14 @@ namespace FlashCards
                 string dateString = date.ToShortDateString();
                 int correctAnswers = (int)dataReader.GetValue(3);
                 int totalGueses = (int)dataReader.GetValue(4);
-                double scorePercent = Math.Round((double)correctAnswers / (double)totalGueses, 3);
+                double scorePercent = Math.Round(((double)correctAnswers / (double)totalGueses) *100, 2);
                 StudySessionToView study = new StudySessionToView
                 {
                     StackName = stackName,
                     Date = dateString,
                     CorrectAnswers = correctAnswers,
                     TotalGueses = totalGueses,
-                    ScorePercent = scorePercent
+                    ScorePercent = $"{scorePercent}%"
                 };
                 stackList.Add(study);
             }
