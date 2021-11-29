@@ -58,6 +58,22 @@ namespace FlashCards
             }
             Console.Write("\n");
         }
+        public static void ViewTable(List<AverageScoreByMonth> tableData)
+        {
+            if (tableData.Count == 0)
+            {
+                Console.WriteLine("Currently empty!");
+            }
+            else
+            {
+                ConsoleTableBuilder
+               .From(tableData)
+               .WithTitle("Average per Month")
+               .WithFormat(ConsoleTableBuilderFormat.Alternative)
+               .ExportAndWriteLine(TableAligntment.Left);
+            }
+            Console.Write("\n");
+        }
 
         public static void ViewCard(List<string> tableData, string stackName)
         {
@@ -103,8 +119,6 @@ namespace FlashCards
             }
             return stackView;
         }
-
-        
 
     }
 }

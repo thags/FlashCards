@@ -337,6 +337,7 @@ namespace FlashCards
                 Console.WriteLine("\n --------------------------");
                 Console.WriteLine("0 to exit");
                 Console.WriteLine("A to view all study session data");
+                Console.WriteLine("M to view an average score for each month of all stacks");
                 Console.WriteLine("-------------------------- \n");
                 string choice = GetUserMenuChoice();
                 switch (choice)
@@ -345,7 +346,15 @@ namespace FlashCards
                         exit = true;
                         break;
                     case "A":
+                        Console.Clear();
                         TableVisualisationEngine.ViewTable(StudyController.GetAllStudySessions());
+                        WaitForUser();
+                        break;
+                    case "M":
+                        Console.Clear();
+                        var pivotTableData = StudyController.GetAverageByMonthPivot();
+                        TableVisualisationEngine.ViewTable(pivotTableData);
+                        WaitForUser();
                         break;
                     default:
                         Console.WriteLine("Incorrect input, try again");
