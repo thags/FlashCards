@@ -40,13 +40,14 @@ namespace FlashCards
             {
                 string stackName = StackController.GetNameFromId((int)dataReader.GetValue(1));
                 DateTime date = (DateTime)dataReader.GetValue(2);
+                string dateString = date.ToShortDateString();
                 int correctAnswers = (int)dataReader.GetValue(3);
                 int totalGueses = (int)dataReader.GetValue(4);
-                double scorePercent = totalGueses / correctAnswers;
+                double scorePercent = Math.Round((double)correctAnswers / (double)totalGueses, 3);
                 StudySessionToView study = new StudySessionToView
                 {
                     StackName = stackName,
-                    Date = date,
+                    Date = dateString,
                     CorrectAnswers = correctAnswers,
                     TotalGueses = totalGueses,
                     ScorePercent = scorePercent
