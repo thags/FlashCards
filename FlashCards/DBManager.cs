@@ -175,6 +175,23 @@ namespace FlashCards
                 Console.WriteLine("Connection could not establish");
             }
         }
+
+        public static void ReIndexFlashCards()
+        {
+                string str;
+                SqlConnection myConn = OpenSql();
+
+            str = @"ALTER TABLE [dbo].[Flashcards] DROP CONSTRAINT [PK_Flashcards]
+                    ALTER TABLE [dbo].[Flashcards] DROP COLUMN [Id]
+                    ALTER TABLE [dbo].[Flashcards] ADD [Id][int] IDENTITY(1, 1) NOT NULL
+                    ALTER TABLE [dbo].[Flashcards] ADD  CONSTRAINT [PK_Flashcards] PRIMARY KEY CLUSTERED 
+                    ([Id] ASC)";
+
+                SqlCommand myCommand = new SqlCommand(str, myConn);
+                    myCommand.ExecuteNonQuery();
+                    myConn.Close();
+
+        }
         public static SqlConnection OpenSql()
         {
             string connectionString = ConfigurationManager.AppSettings.Get("ConnectionStringWithDatabase");

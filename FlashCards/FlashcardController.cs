@@ -30,10 +30,10 @@ namespace FlashCards
 
             while (dataReader.Read())
             {
-                int cardId = (int)dataReader.GetValue(0);
-                string stackName = StackController.GetNameFromId((int)dataReader.GetValue(1));
-                string front = (string)dataReader.GetValue(2);
-                string back = (string)dataReader.GetValue(3);
+                int cardId = (int)dataReader["Id"];
+                string stackName = StackController.GetNameFromId((int)dataReader["StackId"]);
+                string front = (string)dataReader["Front"];
+                string back = (string)dataReader["Back"];
                 Flashcard newStack = new Flashcard
                 {
                     Id = cardId,
@@ -62,10 +62,9 @@ namespace FlashCards
 
             while (dataReader.Read())
             {
-                int Id = (int)dataReader.GetValue(0);
-                int Stack = (int)dataReader.GetValue(1);
-                string Front = (string)dataReader.GetValue(2);
-                string Back = (string)dataReader.GetValue(3);
+                int Id = (int)dataReader["Id"];
+                string Front = (string)dataReader["Front"];
+                string Back = (string)dataReader["Back"];
                 Flashcard newStack = new Flashcard
                 {
                     Id = Id,
@@ -94,10 +93,9 @@ namespace FlashCards
 
             while (dataReader.Read())
             {
-                int Id = (int)dataReader.GetValue(0);
-                int Stack = (int)dataReader.GetValue(1);
-                string Front = (string)dataReader.GetValue(2);
-                string Back = (string)dataReader.GetValue(3);
+                int Id = (int)dataReader["Id"];
+                string Front = (string)dataReader["Front"];
+                string Back = (string)dataReader["Back"];
                 Flashcard newStack = new Flashcard
                 {
                     Id = Id,
@@ -126,10 +124,9 @@ namespace FlashCards
 
             while (dataReader.Read())
             {
-                int Id = (int)dataReader.GetValue(0);
-                int Stack = (int)dataReader.GetValue(1);
-                string Front = (string)dataReader.GetValue(2);
-                string Back = (string)dataReader.GetValue(3);
+                int Id = (int)dataReader["Id"];
+                string Front = (string)dataReader["Front"];
+                string Back = (string)dataReader["Back"];
                 Flashcard newStack = new Flashcard
                 {
                     Id = Id,
@@ -194,6 +191,8 @@ namespace FlashCards
 
             command.Dispose();
             connection.Close();
+
+            DBManager.ReIndexFlashCards();
         }
     }
 }
