@@ -60,13 +60,13 @@ namespace FlashCards
 
             return stackList;
         }
-        public static List<AverageScoreByMonth> GetAverageByMonthPivot()
+        public static List<AverageScoreByMonth> GetAverageByMonthPivot(string yearChoice)
         {
             SqlConnection connection = DBManager.OpenSql();
 
             var stackList = new List<AverageScoreByMonth> { };
 
-            string sqlCommand = @"SELECT * FROM
+            string sqlCommand = $@"SELECT * FROM
                 (
                     SELECT
                         DATENAME(MONTH, dbo.Study.Date) AS StudyMonth
@@ -76,6 +76,7 @@ namespace FlashCards
                         FROM
                         dbo.Study INNER JOIN
                         dbo.Stacks ON dbo.Study.StackId = dbo.Stacks.Id
+                        WHERE DATENAME(YEAR, Date) = '{yearChoice}'
                 ) AS Src
                 PIVOT 
                 (

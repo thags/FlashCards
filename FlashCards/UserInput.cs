@@ -352,7 +352,8 @@ namespace FlashCards
                         break;
                     case "M":
                         Console.Clear();
-                        var pivotTableData = StudyController.GetAverageByMonthPivot();
+                        string yearChoice = GetUserYearChoice();
+                        var pivotTableData = StudyController.GetAverageByMonthPivot(yearChoice);
                         TableVisualisationEngine.ViewTable(pivotTableData);
                         WaitForUser();
                         break;
@@ -412,6 +413,34 @@ namespace FlashCards
             return s;
         }
         private static string GetUserMenuChoice() => Console.ReadLine().ToUpper();
+        private static string GetUserYearChoice()
+        {
+            Console.WriteLine("\n --------------------------");
+            Console.WriteLine("Input a year in format YYYY");
+            Console.WriteLine("-------------------------- \n");
+            string beginYear = "01/01/";
+            string yearResult = "";
+            bool isYearInput;
+            do
+            {
+                string input = Console.ReadLine();
+                string inputYearResult = beginYear + input;
+                isYearInput = DateTime.TryParse(inputYearResult, out DateTime result);
+                if (!isYearInput)
+                {
+                    Console.WriteLine("Incorrect Input, try again.");
+                    Console.WriteLine("Format YYYY \n");
+                }
+                else if (isYearInput)
+                {
+                    yearResult = input;
+                }
+            }
+            while (!isYearInput);
+
+            return yearResult;
+
+        }
         private static string GetFrontFlashCard()
         {
             Console.WriteLine("\n --------------------------");
