@@ -357,7 +357,7 @@ namespace FlashCards
                         Console.Clear();
                         string yearChoice = GetUserYearChoice();
                         var pivotTableData = StudyController.GetAverageByMonthPivot(yearChoice);
-                        TableVisualisationEngine.ViewTable(pivotTableData);
+                        TableVisualisationEngine.ViewTable(pivotTableData, yearChoice);
                         WaitForUser();
                         break;
                     default:

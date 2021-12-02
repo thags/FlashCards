@@ -58,7 +58,7 @@ namespace FlashCards
             }
             Console.Write("\n");
         }
-        public static void ViewTable(List<AverageScoreByMonth> tableData)
+        public static void ViewTable(List<AverageScoreByMonth> tableData, string year)
         {
             if (tableData.Count == 0)
             {
@@ -68,7 +68,7 @@ namespace FlashCards
             {
                 ConsoleTableBuilder
                .From(tableData)
-               .WithTitle("Average per Month")
+               .WithTitle($"Average per Month for year {year}")
                .WithFormat(ConsoleTableBuilderFormat.Alternative)
                .ExportAndWriteLine(TableAligntment.Left);
             }
