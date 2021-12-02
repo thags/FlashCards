@@ -243,9 +243,10 @@ namespace FlashCards
                         }
                         break;
                     case "D":
+                        Console.Clear();
                         Console.WriteLine("5 most recent cards in stack are: ");
                         viewFlashcards = TableVisualisationEngine.MapFlashcardsToDTO(FlashcardController.GetXCardsInStack(currentStackToWorkOn, 5));
-                        Console.Clear();
+                        TableVisualisationEngine.ViewTable(viewFlashcards, currentStackToWorkOn);
                         realCard = GetCardId(out cardId);
                         if (realCard)
                         {
