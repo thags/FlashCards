@@ -10,9 +10,9 @@
   - [x] SQLite isn't allowed. You have to use SQL Server.
   
   ### Part 2: 
-  - [ ] You should have a Study area
-  - [ ] In the study area you should be able to loop through the flashcards in a stack and get an "answer" input for each question.
-  - [ ] You should store your "Study Sessions" and be able to retrieve them.
+  - [x] You should have a Study area
+  - [x] In the study area you should be able to loop through the flashcards in a stack and get an "answer" input for each question.
+  - [x] You should store your "Study Sessions" and be able to retrieve them.
   
 ## Technical Considerations
   - [x] You need to look into "One to many" relationships in SQL, where you'll use a foreign key to link the "stacks" and "flashcards"
