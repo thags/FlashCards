@@ -55,7 +55,7 @@ namespace FlashCards
 
             var stackList = new List<Flashcard> { };
             int stackId = StackController.GetIdFromName(stackName);
-            string sqlCommand = $"SELECT * FROM Flashcards WHERE StackId = {stackId}";
+            string sqlCommand = $"SELECT * FROM Flashcards WHERE StackId = {stackId} ORDER BY Id DESC";
 
             SqlCommand command = new SqlCommand(sqlCommand, connection);
             SqlDataReader dataReader = command.ExecuteReader();

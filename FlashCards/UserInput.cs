@@ -492,8 +492,8 @@ namespace FlashCards
                         default:
                             //the real index is 1 less than shown on screen
                             userInput--;
-                            userInput = flashcardList[userInput].Id;
-                            realCard = FlashcardController.CheckCardExists(userInput);
+                            int userInputCardId = flashcardList[userInput].Id;
+                            realCard = FlashcardController.CheckCardExists(userInputCardId);
                             if (!realCard)
                             {
                                 Console.Clear();
