@@ -236,7 +236,7 @@ namespace FlashCards
                         {
                             FlashCardEditMenu(cardIdDB, currentStackToWorkOn, viewFlashcards[cardIdView-1]);
                         }
-                        if (cardIdView == 0)
+                        else if (cardIdView == 0)
                         {
                             break;
                         }
@@ -494,7 +494,11 @@ namespace FlashCards
                     Console.Clear();
                     Console.WriteLine("Input needs to be a number, try again \n");
                 }
-                else
+                else if (cardIdView == 0)
+                {
+                    return false;
+                }
+                else if(cardIdView <= flashcardList.Count && cardIdView > 0)
                 {
                     switch (cardIdView)
                     {
@@ -505,7 +509,7 @@ namespace FlashCards
                             //the real index is 1 less than shown on screen
                             cardIdDB = flashcardList[cardIdView - 1].Id;
                             realCard = FlashcardController.CheckCardExists(cardIdDB);
-                            if (!realCard || cardIdDB < 0)
+                            if (!realCard)
                             {
                                 Console.Clear();
                                 Console.WriteLine("Not a valid flashcard id, try again");
