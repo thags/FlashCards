@@ -9,7 +9,7 @@ namespace FlashCards
 {
     class TableVisualisationEngine
     {
-        public static void ViewTable(List<StacksToView> tableData)
+        public static void ViewTable<T>(List<T> tableData, string title = "") where T : class
         {
             if (tableData.Count == 0)
             {
@@ -19,76 +19,13 @@ namespace FlashCards
             {
                 ConsoleTableBuilder
                .From(tableData)
-               .WithFormat(ConsoleTableBuilderFormat.Alternative)
-               .ExportAndWriteLine(TableAligntment.Left);
-            }
-            Console.Write("\n");
-
-        }
-
-        public static void ViewTable(List<FlashcardsToView> tableData, string stackName)
-        {
-            if (tableData.Count == 0)
-            {
-                Console.WriteLine("Currently empty!");
-            }
-            else
-            {
-                ConsoleTableBuilder
-               .From(tableData)
-               .WithTitle($"Stack: {stackName}")
-               .WithFormat(ConsoleTableBuilderFormat.Alternative)
-               .ExportAndWriteLine(TableAligntment.Left);
-            }
-            Console.Write("\n");
-        }
-        public static void ViewTable(List<StudySessionToView> tableData)
-        {
-            if (tableData.Count == 0)
-            {
-                Console.WriteLine("Currently empty!");
-            }
-            else
-            {
-                ConsoleTableBuilder
-               .From(tableData)
-               .WithFormat(ConsoleTableBuilderFormat.Alternative)
-               .ExportAndWriteLine(TableAligntment.Left);
-            }
-            Console.Write("\n");
-        }
-        public static void ViewTable(List<AverageScoreByMonth> tableData, string year)
-        {
-            if (tableData.Count == 0)
-            {
-                Console.WriteLine("Currently empty!");
-            }
-            else
-            {
-                ConsoleTableBuilder
-               .From(tableData)
-               .WithTitle($"Average per Month for year {year}")
+               .WithTitle(title)
                .WithFormat(ConsoleTableBuilderFormat.Alternative)
                .ExportAndWriteLine(TableAligntment.Left);
             }
             Console.Write("\n");
         }
 
-        public static void ViewCard(List<string> tableData, string stackName)
-        {
-            if (tableData.Count == 0)
-            {
-                Console.WriteLine("Currently empty!");
-            }
-            else
-            {
-                ConsoleTableBuilder
-               .From(tableData)
-               //.WithTitle($"Stack: {stackName}")
-               .WithFormat(ConsoleTableBuilderFormat.Alternative)
-               .ExportAndWriteLine(TableAligntment.Left);
-            }
-        }
 
         public static List<StacksToView> MapStacksToDTO(List<Stack> unMapped)
         {

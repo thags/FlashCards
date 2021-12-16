@@ -299,9 +299,11 @@ namespace FlashCards
                 var flashcardsDTOFromStack = TableVisualisationEngine.MapFlashcardsToDTO(flashcardsFromStack);
                 foreach (FlashcardsToView fcard in flashcardsDTOFromStack)
                 {
-                    var frontOfCard = new List<string>();
-                    frontOfCard.Add(fcard.Front);
-                    TableVisualisationEngine.ViewCard(frontOfCard, stackChoice);
+                    var frontOfCard = new List<FrontFlashCard>
+                    {
+                        new FrontFlashCard { Front = fcard.Front}
+                    };
+                    TableVisualisationEngine.ViewTable(frontOfCard, stackChoice);
                     string guess = GetUserCardGuess();
                     if (guess == "0")
                     {
@@ -356,14 +358,14 @@ namespace FlashCards
                         break;
                     case "A":
                         Console.Clear();
-                        TableVisualisationEngine.ViewTable(StudyController.GetAllStudySessions());
+                        TableVisualisationEngine.ViewTable(StudyController.GetAllStudySessions(), "All study sessions");
                         WaitForUser();
                         break;
                     case "M":
                         Console.Clear();
                         string yearChoice = GetUserYearChoice();
                         var pivotTableData = StudyController.GetAverageByMonthPivot(yearChoice);
-                        TableVisualisationEngine.ViewTable(pivotTableData, yearChoice);
+                        TableVisualisationEngine.ViewTable(pivotTableData, $"Average per month for: {yearChoice}");
                         WaitForUser();
                         break;
                     default:

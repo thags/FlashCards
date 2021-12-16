@@ -44,13 +44,22 @@ namespace FlashCards
                 int correctAnswers = (int)dataReader.GetValue(3);
                 int totalGueses = (int)dataReader.GetValue(4);
                 double scorePercent = Math.Round(((double)correctAnswers / (double)totalGueses) * 100, 2);
+                string scoreString;
+                if (scorePercent > 0)
+                {
+                    scoreString = $"{scorePercent}%";
+                }
+                else
+                {
+                    scoreString = "No data";
+                }
                 StudySessionToView study = new StudySessionToView
                 {
                     StackName = stackName,
                     Date = dateString,
                     CorrectAnswers = correctAnswers,
                     TotalGueses = totalGueses,
-                    ScorePercent = $"{scorePercent}%"
+                    ScorePercent = scoreString
                 };
                 stackList.Add(study);
             }
@@ -76,7 +85,7 @@ namespace FlashCards
                         FROM
                         dbo.Study INNER JOIN
                         dbo.Stacks ON dbo.Study.StackId = dbo.Stacks.Id
-                        WHERE DATENAME(YEAR, Date) = '{yearChoice}'
+                        WHERE DATENAME(YEAR, Date) = '{yearChoice}' AND dbo.Study.TotalGueses > 0
                 ) AS Src
                 PIVOT 
                 (
@@ -93,18 +102,18 @@ namespace FlashCards
                 AverageScoreByMonth study = new AverageScoreByMonth
                 {
                     StackName = dataReader["StackName"].ToString(),
-                    January = CheckIfVoidOrEmpty(dataReader["January"].ToString()),
-                    February = CheckIfVoidOrEmpty(dataReader["February"].ToString()),
-                    April = CheckIfVoidOrEmpty(dataReader["April"].ToString()),
-                    March = CheckIfVoidOrEmpty(dataReader["March"].ToString()),
-                    May = CheckIfVoidOrEmpty(dataReader["May"].ToString()),
-                    June = CheckIfVoidOrEmpty(dataReader["June"].ToString()),
-                    July = CheckIfVoidOrEmpty(dataReader["July"].ToString()),
-                    August = CheckIfVoidOrEmpty(dataReader["August"].ToString()),
-                    September = CheckIfVoidOrEmpty(dataReader["September"].ToString()),
-                    October = CheckIfVoidOrEmpty(dataReader["October"].ToString()),
-                    November = CheckIfVoidOrEmpty(dataReader["November"].ToString()),
-                    December = CheckIfVoidOrEmpty(dataReader["December"].ToString()),
+                    January = CheckIfVoidOrEmpty(parseIntAndRound(dataReader["January"].ToString())),
+                    February = CheckIfVoidOrEmpty(parseIntAndRound(dataReader["February"].ToString())),
+                    April = CheckIfVoidOrEmpty(parseIntAndRound(dataReader["April"].ToString())),
+                    March = CheckIfVoidOrEmpty(parseIntAndRound(dataReader["March"].ToString())),
+                    May = CheckIfVoidOrEmpty(parseIntAndRound(dataReader["May"].ToString())),
+                    June = CheckIfVoidOrEmpty(parseIntAndRound(dataReader["June"].ToString())),
+                    July = CheckIfVoidOrEmpty(parseIntAndRound(dataReader["July"].ToString())),
+                    August = CheckIfVoidOrEmpty(parseIntAndRound(dataReader["August"].ToString())),
+                    September = CheckIfVoidOrEmpty(parseIntAndRound(dataReader["September"].ToString())),
+                    October = CheckIfVoidOrEmpty(parseIntAndRound(dataReader["October"].ToString())),
+                    November = CheckIfVoidOrEmpty(parseIntAndRound(dataReader["November"].ToString())),
+                    December = CheckIfVoidOrEmpty(parseIntAndRound(dataReader["December"].ToString())),
                 };
                 stackList.Add(study);
             }
@@ -120,6 +129,18 @@ namespace FlashCards
             if (s == null || s == "")
             {
                 return "0";
+            }
+            else
+            {
+                return s;
+            }
+        }
+        private static string parseIntAndRound(string s)
+        {
+            bool didParse = float.TryParse(s, out float val);
+            if (didParse == true)
+            {
+                return Math.Round(val, 1).ToString();
             }
             else
             {
