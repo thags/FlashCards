@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System;
-using ConsoleTableExt;
+﻿using ConsoleTableExt;
 using FlashCards.Models;
 using FlashCards.Models.DTOs;
-using System.Data;
+using System;
+using System.Collections.Generic;
 
 
 namespace FlashCards
@@ -24,7 +23,7 @@ namespace FlashCards
                .ExportAndWriteLine(TableAligntment.Left);
             }
             Console.Write("\n");
-            
+
         }
 
         public static void ViewTable(List<FlashcardsToView> tableData, string stackName)
@@ -102,10 +101,11 @@ namespace FlashCards
             List<StacksToView> stackView = new List<StacksToView> { };
             foreach (Stack s in unMapped)
             {
-               StacksToView mappedStack = new StacksToView {
-                   Name = s.Name
-               };
-               stackView.Add(mappedStack);
+                StacksToView mappedStack = new StacksToView
+                {
+                    Name = s.Name
+                };
+                stackView.Add(mappedStack);
             }
             return stackView;
         }

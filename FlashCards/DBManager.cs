@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Data.SqlClient;
 using System.Configuration;
+using System.Data.SqlClient;
 
 namespace FlashCards
 {
@@ -32,11 +32,11 @@ namespace FlashCards
                     else
                     {
                         Console.WriteLine(ex.ToString());
-                    }  
+                    }
                 }
                 finally
                 {
-                        myConn.Close();
+                    myConn.Close();
                 }
             }
             catch

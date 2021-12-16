@@ -149,8 +149,8 @@ namespace FlashCards
                     break;
                 }
             }
-            
-            
+
+
             while (!exit)
             {
                 Console.WriteLine("\n --------------------------");
@@ -326,10 +326,10 @@ namespace FlashCards
                         WaitForUser();
                         break;
                     }
-                    
+
                 }
             }
-            
+
 
         }
         private static void ReportsMenu()
@@ -588,7 +588,7 @@ namespace FlashCards
             Console.WriteLine("\n");
             Console.WriteLine("Input your answer to this card");
             Console.WriteLine("Or 0 to exit \n");
-            string guess =  Console.ReadLine();
+            string guess = Console.ReadLine();
             Console.WriteLine("\n");
             return guess;
         }

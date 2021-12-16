@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using FlashCards.Models;
+﻿using FlashCards.Models;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 
 namespace FlashCards

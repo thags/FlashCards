@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using FlashCards.Models;
-using System.Data.SqlClient;
+﻿using FlashCards.Models;
 using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
 
 namespace FlashCards
 {
@@ -43,7 +43,7 @@ namespace FlashCards
                 string dateString = date.ToShortDateString();
                 int correctAnswers = (int)dataReader.GetValue(3);
                 int totalGueses = (int)dataReader.GetValue(4);
-                double scorePercent = Math.Round(((double)correctAnswers / (double)totalGueses) *100, 2);
+                double scorePercent = Math.Round(((double)correctAnswers / (double)totalGueses) * 100, 2);
                 StudySessionToView study = new StudySessionToView
                 {
                     StackName = stackName,
