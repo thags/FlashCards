@@ -1,4 +1,5 @@
-﻿using FlashCards.Models.DTOs;
+﻿using FlashCards.Models;
+using FlashCards.Models.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -175,6 +176,8 @@ namespace FlashCards
                     case "X":
                         Console.Clear();
                         Console.WriteLine("\n --------------------------");
+                        Console.WriteLine("5 Most recent stacks are: \n");
+                        DisplayLatest5Stacks();
                         Console.WriteLine("Choose a stack of flashcards to interact with: ");
                         Console.WriteLine("-------------------------- \n");
                         bool didReturnRealStack = GetCurrentStack(out string potentialStack);
@@ -225,16 +228,17 @@ namespace FlashCards
                     case "E":
                         Console.Clear();
                         Console.WriteLine("5 most recent cards in stack are: ");
-                        viewFlashcards = TableVisualisationEngine.MapFlashcardsToDTO(FlashcardController.GetXCardsInStack(currentStackToWorkOn, 5));
+                        var flashcardsFromDB = FlashcardController.GetXCardsInStack(currentStackToWorkOn, 5);
+                        viewFlashcards = TableVisualisationEngine.MapFlashcardsToDTO(flashcardsFromDB);
                         TableVisualisationEngine.ViewTable(viewFlashcards, currentStackToWorkOn);
-                        bool realCard = GetCardId(out int cardId, viewFlashcards);
-                        if (realCard)
+                        bool realCard = GetCardId(out int cardIdDB, out int cardIdView, flashcardsFromDB);
+                        if (realCard && cardIdDB > -1)
                         {
-                            FlashCardEditMenu(cardId, currentStackToWorkOn);
-                            Console.WriteLine("Card after edit is: \n");
-                            viewFlashcards = TableVisualisationEngine.MapFlashcardsToDTO(FlashcardController.GetCardById(cardId));
-                            TableVisualisationEngine.ViewTable(viewFlashcards, currentStackToWorkOn);
-                            WaitForUser();
+                            FlashCardEditMenu(cardIdDB, currentStackToWorkOn, viewFlashcards[cardIdView-1]);
+                        }
+                        if (cardIdView == 0)
+                        {
+                            break;
                         }
                         else
                         {
@@ -245,15 +249,17 @@ namespace FlashCards
                     case "D":
                         Console.Clear();
                         Console.WriteLine("5 most recent cards in stack are: ");
-                        viewFlashcards = TableVisualisationEngine.MapFlashcardsToDTO(FlashcardController.GetXCardsInStack(currentStackToWorkOn, 5));
+                        flashcardsFromDB = FlashcardController.GetXCardsInStack(currentStackToWorkOn, 5);
+                        viewFlashcards = TableVisualisationEngine.MapFlashcardsToDTO(flashcardsFromDB);
                         TableVisualisationEngine.ViewTable(viewFlashcards, currentStackToWorkOn);
-                        realCard = GetCardId(out cardId, viewFlashcards);
+                        realCard = GetCardId(out cardIdDB, out cardIdView, flashcardsFromDB);
                         if (realCard)
                         {
-                            FlashcardController.Delete(cardId);
+                            FlashcardController.Delete(cardIdDB);
                             Console.WriteLine("Flashcard deleted");
                             WaitForUser();
                         }
+                        
                         break;
 
                     default:
@@ -367,14 +373,16 @@ namespace FlashCards
                 }
             }
         }
-        private static void FlashCardEditMenu(int cardId, string currentStackToWorkOn)
+        private static void FlashCardEditMenu(int cardDBId, string currentStackToWorkOn, FlashcardsToView viewFlashcard)
         {
             bool exit = false;
             while (!exit)
             {
                 Console.Clear();
-                var viewFlashcards = TableVisualisationEngine.MapFlashcardsToDTO(FlashcardController.GetCardById(cardId));
-                TableVisualisationEngine.ViewTable(viewFlashcards, currentStackToWorkOn);
+                //var viewFlashcards = TableVisualisationEngine.MapFlashcardsToDTO(FlashcardController.GetCardById(cardId));
+                var viewFlashcardsList = new List<FlashcardsToView>();
+                viewFlashcardsList.Add(viewFlashcard);
+                TableVisualisationEngine.ViewTable(viewFlashcardsList, currentStackToWorkOn);
                 Console.WriteLine("\n");
                 Console.WriteLine("--------------------------");
                 Console.WriteLine("0 to return to previous menu");
@@ -392,11 +400,13 @@ namespace FlashCards
                         break;
                     case "F":
                         string front = GetFrontFlashCard();
-                        FlashcardController.UpdateCard(cardId, front, "Front");
+                        viewFlashcard.Front = front;
+                        FlashcardController.UpdateCard(cardDBId, front, "Front");
                         break;
                     case "B":
                         string back = GetBackFlashCard();
-                        FlashcardController.UpdateCard(cardId, back, "Back");
+                        viewFlashcard.Back = back;
+                        FlashcardController.UpdateCard(cardDBId, back, "Back");
                         break;
                     default:
                         break;
@@ -462,9 +472,10 @@ namespace FlashCards
             Console.Clear();
             return RemoveSpecials(input);
         }
-        private static bool GetCardId(out int cardId, List<FlashcardsToView> flashcardList)
+        private static bool GetCardId(out int cardIdDB, out int cardIdView, List<Flashcard> flashcardList)
         {
-            cardId = -1;
+            cardIdDB = -1;
+            cardIdView = -1;
             bool correctInput = false;
             bool realCard = false;
             while (!correctInput && !realCard)
@@ -476,32 +487,31 @@ namespace FlashCards
                 string input = Console.ReadLine();
                 Console.Clear();
 
-                correctInput = int.TryParse(input, out int userInput);
+                correctInput = int.TryParse(input, out cardIdView);
 
                 if (!correctInput)
                 {
                     Console.Clear();
-                    Console.WriteLine("Incorrect Input, try again \n");
+                    Console.WriteLine("Input needs to be a number, try again \n");
                 }
                 else
                 {
-                    switch (userInput)
+                    switch (cardIdView)
                     {
                         case 0:
+                            cardIdView = 0;
                             return false;
                         default:
                             //the real index is 1 less than shown on screen
-                            userInput--;
-                            int userInputCardId = flashcardList[userInput].Id;
-                            realCard = FlashcardController.CheckCardExists(userInputCardId);
-                            if (!realCard)
+                            cardIdDB = flashcardList[cardIdView - 1].Id;
+                            realCard = FlashcardController.CheckCardExists(cardIdDB);
+                            if (!realCard || cardIdDB < 0)
                             {
                                 Console.Clear();
                                 Console.WriteLine("Not a valid flashcard id, try again");
                             }
                             else
                             {
-                                cardId = userInput;
                                 return true;
                             }
                             break;

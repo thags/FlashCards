@@ -34,16 +34,10 @@ namespace FlashCards
             }
             else
             {
-                int reformatId = 0;
                 ConsoleTableBuilder
                .From(tableData)
                .WithTitle($"Stack: {stackName}")
                .WithFormat(ConsoleTableBuilderFormat.Alternative)
-               .WithFormatter(0, (id) =>
-               {
-                   reformatId++;
-                   return reformatId.ToString();
-               })
                .ExportAndWriteLine(TableAligntment.Left);
             }
             Console.Write("\n");
@@ -113,15 +107,17 @@ namespace FlashCards
         public static List<FlashcardsToView> MapFlashcardsToDTO(List<Flashcard> unMapped)
         {
             List<FlashcardsToView> stackView = new List<FlashcardsToView> { };
+            int id = 1;
             foreach (Flashcard f in unMapped)
             {
                 FlashcardsToView mappedStack = new FlashcardsToView
                 {
-                    Id = f.Id,
+                    Id = id,
                     Front = f.Front,
                     Back = f.Back
                 };
                 stackView.Add(mappedStack);
+                id++;
             }
             return stackView;
         }
