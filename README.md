@@ -39,7 +39,7 @@
 - Creating DB tables through C# code
 - Creating FK through C# code
 
-##Packages used:
+## Packages used:
 
 - [Configuration Manager](https://docs.microsoft.com/en-us/dotnet/api/system.configuration.configurationmanager.connectionstrings?view=dotnet-plat-ext-6.0)
 - [ConsoleTableExt](https://github.com/minhhungit/ConsoleTableExt)
@@ -60,3 +60,4 @@
 - Going overboard with separation of concern and trying to divide everything into another class
 - Creating messy looking code at the beginning - it makes it more difficult to make nice looking code later on.
 - Made the web.config XML parsing a bit more difficult than it needed to be
+- Not using DTO's earlier on and kind of forcing them on, instead of thiking about how to incorporate them better. 
