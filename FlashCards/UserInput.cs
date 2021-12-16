@@ -227,7 +227,7 @@ namespace FlashCards
                         Console.WriteLine("5 most recent cards in stack are: ");
                         viewFlashcards = TableVisualisationEngine.MapFlashcardsToDTO(FlashcardController.GetXCardsInStack(currentStackToWorkOn, 5));
                         TableVisualisationEngine.ViewTable(viewFlashcards, currentStackToWorkOn);
-                        bool realCard = GetCardId(out int cardId);
+                        bool realCard = GetCardId(out int cardId, viewFlashcards);
                         if (realCard)
                         {
                             FlashCardEditMenu(cardId, currentStackToWorkOn);
@@ -247,7 +247,7 @@ namespace FlashCards
                         Console.WriteLine("5 most recent cards in stack are: ");
                         viewFlashcards = TableVisualisationEngine.MapFlashcardsToDTO(FlashcardController.GetXCardsInStack(currentStackToWorkOn, 5));
                         TableVisualisationEngine.ViewTable(viewFlashcards, currentStackToWorkOn);
-                        realCard = GetCardId(out cardId);
+                        realCard = GetCardId(out cardId, viewFlashcards);
                         if (realCard)
                         {
                             FlashcardController.Delete(cardId);
@@ -462,7 +462,7 @@ namespace FlashCards
             Console.Clear();
             return RemoveSpecials(input);
         }
-        private static bool GetCardId(out int cardId)
+        private static bool GetCardId(out int cardId, List<FlashcardsToView> flashcardList)
         {
             cardId = -1;
             bool correctInput = false;
@@ -490,6 +490,9 @@ namespace FlashCards
                         case 0:
                             return false;
                         default:
+                            //the real index is 1 less than shown on screen
+                            userInput--;
+                            userInput = flashcardList[userInput].Id;
                             realCard = FlashcardController.CheckCardExists(userInput);
                             if (!realCard)
                             {
