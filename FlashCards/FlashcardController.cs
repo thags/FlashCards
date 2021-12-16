@@ -191,8 +191,6 @@ namespace FlashCards
 
             command.Dispose();
             connection.Close();
-
-            DBManager.ReIndexFlashCards();
         }
     }
 }
