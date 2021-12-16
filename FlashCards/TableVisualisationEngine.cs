@@ -35,10 +35,16 @@ namespace FlashCards
             }
             else
             {
+                int reformatId = 0;
                 ConsoleTableBuilder
                .From(tableData)
                .WithTitle($"Stack: {stackName}")
                .WithFormat(ConsoleTableBuilderFormat.Alternative)
+               .WithFormatter(0, (id) =>
+               {
+                   reformatId++;
+                   return reformatId.ToString();
+               })
                .ExportAndWriteLine(TableAligntment.Left);
             }
             Console.Write("\n");
