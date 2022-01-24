@@ -6,91 +6,85 @@ namespace FlashCards
 {
     class DBManager
     {
+        private static string connectionString = ConfigurationManager.AppSettings.Get("ConnectionString");
         public static void CreateDatabase()
         {
-            try
-            {
-                string str;
-                string connectionString = ConfigurationManager.AppSettings.Get("ConnectionString");
-                SqlConnection myConn = new SqlConnection(connectionString);
 
-                str = "CREATE DATABASE flashcards";
-
-                SqlCommand myCommand = new SqlCommand(str, myConn);
-                try
-                {
-                    myConn.Open();
-                    myCommand.ExecuteNonQuery();
-                    Console.WriteLine("DataBase is Created Successfully");
-                }
-                catch (System.Exception ex)
-                {
-                    if (ex.HResult == -2146232060)
-                    {
-                        Console.WriteLine("Database Exists!");
-                    }
-                    else
-                    {
-                        Console.WriteLine(ex.ToString());
-                    }
-                }
-                finally
-                {
-                    myConn.Close();
-                }
-            }
-            catch
+            using (var connection = new SqlConnection(connectionString))
             {
-                Console.WriteLine("Database Exists!");
+                using (var command = connection.CreateCommand())
+                {
+                    connection.Open();
+                    command.CommandText = "CREATE DATABASE flashcards";
+                        try
+                        {
+                            command.ExecuteNonQuery();
+                            Console.WriteLine("DataBase is Created Successfully");
+                        }
+                        catch (System.Exception ex)
+                        {
+                            if (ex.HResult == -2146232060)
+                            {
+                                Console.WriteLine("Database Exists!");
+                            }
+                            else
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
+                        }
+                        finally
+                        {
+                            command.Dispose();
+                            connection.Dispose();
+                        }
+                }
             }
         }
+
         public static void CreateStackTable()
         {
-            try
+            using (var connection = new SqlConnection(connectionString))
             {
-                string str;
-                SqlConnection myConn = OpenSql();
-
-                str = $@"CREATE TABLE [dbo].[Stacks](
+                using (var command = connection.CreateCommand())
+                {
+                    connection.Open();
+                    command.CommandText = $@"CREATE TABLE [dbo].[Stacks](
                         [Id][int] IDENTITY(1, 1) NOT NULL,
                         [Name] [nvarchar](max)NOT NULL,
                         CONSTRAINT[PK_Stacks] PRIMARY KEY CLUSTERED([Id] ASC))";
+                    try
+                    {
+                        command.ExecuteNonQuery();
+                        Console.WriteLine("Stacks table created Successfully");
+                    }
+                    catch (System.Exception ex)
+                    {
+                        if (ex.Message == "There is already an object named 'Stacks' in the database.")
+                        {
+                            Console.WriteLine("Stacks Table already existed!");
+                        }
+                        else
+                        {
+                            Console.WriteLine(ex.ToString());
+                        }
+                    }
+                    finally
+                    {
+                        command.Dispose();
+                        connection.Dispose();
+                    }
 
-                SqlCommand myCommand = new SqlCommand(str, myConn);
-                try
-                {
-                    myCommand.ExecuteNonQuery();
-                    Console.WriteLine("Stacks table created Successfully");
                 }
-                catch (System.Exception ex)
-                {
-                    if (ex.Message == "There is already an object named 'Stacks' in the database.")
-                    {
-                        Console.WriteLine("Stacks Table already existed!");
-                    }
-                    else
-                    {
-                        Console.WriteLine(ex.ToString());
-                    }
-                }
-                finally
-                {
-                    myConn.Close();
-                }
-            }
-            catch
-            {
-                Console.WriteLine("Connection could not establish");
             }
         }
         public static void CreateFlashCardTable()
         {
-            try
+            using (var connection = new SqlConnection(connectionString))
             {
-                string str;
-                SqlConnection myConn = OpenSql();
-
-                str = $@"CREATE TABLE [dbo].[Flashcards](
+                using (var command = connection.CreateCommand())
+                {
+                    connection.Open();
+                    command.CommandText = $@"CREATE TABLE [dbo].[Flashcards](
                         [Id][int] IDENTITY(1, 1) NOT NULL,
                         [StackId] [int] NOT NULL,
                         [Front][nvarchar](max) NOT NULL,
@@ -101,41 +95,38 @@ namespace FlashCards
                         ON UPDATE CASCADE 
                         ON DELETE CASCADE)";
 
-                SqlCommand myCommand = new SqlCommand(str, myConn);
-                try
-                {
-                    myCommand.ExecuteNonQuery();
-                    Console.WriteLine("Flashcards table created Successfully");
-                }
-                catch (System.Exception ex)
-                {
-                    if (ex.Message == "There is already an object named 'Flashcards' in the database.")
+                    try
                     {
-                        Console.WriteLine("Flashcards Table already Existed!");
+                        command.ExecuteNonQuery();
+                        Console.WriteLine("Flashcards table created Successfully");
                     }
-                    else
+                    catch (System.Exception ex)
                     {
-                        Console.WriteLine(ex.ToString());
+                        if (ex.Message == "There is already an object named 'Flashcards' in the database.")
+                        {
+                            Console.WriteLine("Flashcards Table already Existed!");
+                        }
+                        else
+                        {
+                            Console.WriteLine(ex.ToString());
+                        }
+                    }
+                    finally
+                    {
+                        command.Dispose();
+                        connection.Dispose();
                     }
                 }
-                finally
-                {
-                    myConn.Close();
-                }
-            }
-            catch
-            {
-                Console.WriteLine("Connection could not establish");
             }
         }
         public static void CreateStudyTable()
         {
-            try
+            using (var connection = new SqlConnection(connectionString))
             {
-                string str;
-                SqlConnection myConn = OpenSql();
-
-                str = $@"CREATE TABLE [dbo].[Study](
+                using (var command = connection.CreateCommand())
+                {
+                    connection.Open();
+                    command.CommandText = $@"CREATE TABLE [dbo].[Study](
                         [Id][int] IDENTITY(1, 1) NOT NULL,
                         [StackId] [int] NOT NULL,
                         [Date][date] NOT NULL,
@@ -146,40 +137,29 @@ namespace FlashCards
                         REFERENCES[dbo].[Stacks]([Id]) 
                         ON UPDATE CASCADE 
                         ON DELETE CASCADE)";
-
-                SqlCommand myCommand = new SqlCommand(str, myConn);
-                try
-                {
-                    myCommand.ExecuteNonQuery();
-                    Console.WriteLine("Study table created Successfully");
-                }
-                catch (System.Exception ex)
-                {
-                    if (ex.Message == "There is already an object named 'Study' in the database.")
+                    try
                     {
-                        Console.WriteLine("Study Table already Existed!");
+                        command.ExecuteNonQuery();
+                        Console.WriteLine("Study table created Successfully");
                     }
-                    else
+                    catch (System.Exception ex)
                     {
-                        Console.WriteLine(ex.ToString());
+                        if (ex.Message == "There is already an object named 'Study' in the database.")
+                        {
+                            Console.WriteLine("Study Table already Existed!");
+                        }
+                        else
+                        {
+                            Console.WriteLine(ex.ToString());
+                        }
                     }
-                }
-                finally
-                {
-                    myConn.Close();
+                    finally
+                    {
+                        command.Dispose();
+                        connection.Dispose();
+                    }
                 }
             }
-            catch
-            {
-                Console.WriteLine("Connection could not establish");
-            }
-        }
-        public static SqlConnection OpenSql()
-        {
-            string connectionString = ConfigurationManager.AppSettings.Get("ConnectionStringWithDatabase");
-            var connection = new SqlConnection(connectionString);
-            connection.Open();
-            return connection;
         }
     }
 }
